@@ -1,8 +1,8 @@
 'use strict';
-angular.module('wysiwyg', []);
+angular.module('ngWYSIWYG', []);
 
-angular.module('wysiwyg').directive('wframe', ['$compile', '$http', '$timeout', 
-    function($compile, $http, $timeout) {
+angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', 
+    function($compile, $timeout) {
 	//kudos http://stackoverflow.com/questions/13881834/bind-angular-cross-iframes-possible
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    var $document = $element[0].contentDocument;
@@ -101,7 +101,7 @@ angular.module('wysiwyg').directive('wframe', ['$compile', '$http', '$timeout',
     }
 ]);
 
-angular.module('wysiwyg').directive('wysiwygEdit', ['$compile', '$timeout', 
+angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', 
     function($compile, $timeout) {
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    scope.editMode = false;
@@ -147,7 +147,7 @@ angular.module('wysiwyg').directive('wysiwygEdit', ['$compile', '$timeout',
 	    },
 	    restrict: 'AE',
 	    replace: true,
-	    templateUrl: '/globals/template/wysiwyg'
+	    templateUrl: 'tpl/wysiwyg'
 	}
     }
 ]);

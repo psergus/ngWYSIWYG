@@ -1,4 +1,3 @@
-{literal}
 <div class="tinyeditor">
     <div class="tinyeditor-header">
 	<div class="tinyeditor-control" title="Bold" style="background-position: 0px -120px;" ng-click="execCommand('bold')"></div>
@@ -37,4 +36,3 @@
 	<div ng-switch="editMode" ng-click="editMode = !editMode" class="toggle"><span ng-switch-when="true">wysiwyg</span><span ng-switch-default>source</span></div>
     </div>
 </div>
-{/literal}
