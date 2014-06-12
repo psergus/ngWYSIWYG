@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Angular WYSIWYG Demo</title>
-    <link rel="stylesheet" href="css/editor.css>
+    <link rel="stylesheet" href="css/editor.css">
 </head>
 <body ng-controller="demoController" ng-cloak>
     <wysiwyg-edit content="content"></wysiwyg-edit>
@@ -17,8 +17,8 @@
     <script>
 	angular.module('myApp', ['ngWYSIWYG']).
 	controller('demoController', ['$scope', '$log', function($scope, $log) {
-	    scope.content = '<p><strong>Hellow World!</strong></p>';
-	    scope.watch('content', function(newValue) {
+	    $scope.content = '<p><strong>Hello World!</strong></p><img src="http://www.ng-newsletter.com/img/ng-newsletter-shield-logo.png">';
+	    $scope.$watch('content', function(newValue) {
 		$log.info(newValue);
 	    });
 	}]);

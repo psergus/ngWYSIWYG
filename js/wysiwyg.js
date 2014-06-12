@@ -68,18 +68,6 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    });
 	    
 	    //init
-	    //var template  = $compile( '<p>test</p>' )(scope);
-	    //$body.append(template);
-	    //$head[0].innerHTML = '<script>function rightStuff() { document.oncontextmenu = null; document.onselectstart = null; document.onmousedown = null; };\nwindow.onload = rightStuff;</script><script src="/scripts/globals/wysiwyg-image.plugin.js"></script>';
-	    //$compile('<script>function rightStuff() { alert(\'test\'); document.oncontextmenu = null; document.onselectstart = null; document.onmousedown = null; };\nwindow.onload = rightStuff;</script>')(scope)
-	    /*
-	    var rightStuff = '<script src="/scripts/globals/wysiwyg-image.plugin.js"></script>';
-	    */
-	    var fileref = document.createElement('script');
-	    fileref.setAttribute("type","text/javascript");
-	    fileref.setAttribute("src", '/scripts/globals/wysiwyg-image.plugin.js');
-	    $element[0].contentDocument.head.appendChild( fileref );
-	    console.log( $document );
 	    try {
 		$document.execCommand("styleWithCSS", 0, 0);
 		$document.execCommand('contentReadOnly', 0, 'false');
@@ -147,7 +135,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    },
 	    restrict: 'AE',
 	    replace: true,
-	    templateUrl: 'tpl/wysiwyg'
+	    templateUrl: 'tpl/wysiwyg.tpl'
 	}
     }
 ]);
