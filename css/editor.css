@@ -14,3 +14,6 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 .toggle {float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666}
 .toggle:hover {background-color:#fff}
 .resize {float:right; height:32px; width:32px; background:url(../images/resize.gif) 15px 15px no-repeat; cursor:s-resize}
+.colors-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 192px; border: black solid 2px; padding: 0; margin: 0; }
+.colors-grid > li { list-style: none; border: white solid 2px; float: left; width: 20px; height: 20px; }
+.colors-grid > li:hover { opacity: 0.7; }

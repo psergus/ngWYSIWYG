@@ -22,6 +22,13 @@
 	<select class="tinyeditor-size" ng-model="fontsize" ng-options="a as a for a in fontsizes"><option value="">...</option></select>
 	<select class="tinyeditor-style" ng-model="textstyle" ng-options="s.key as s.name for s in styles"><option value="">Style</option></select>
 	<div class="tinyeditor-divider"></div>
+	<div class="tinyeditor-control" title="Font Color" style="background-position: 0px -779px; position: relative;" ng-click="showFontColors = !showFontColors">
+	    <colors-grid show="showFontColors" on-pick="setFontColor(color)"><colors-grid>
+	</div>
+	<div class="tinyeditor-control" title="Background Color" style="background-position: 0px -808px; position: relative;" ng-click="showBgColors = !showBgColors">
+	    <colors-grid show="showBgColors" on-pick="setBgColor(color)"><colors-grid>
+	</div>
+	<div class="tinyeditor-divider"></div>
 	<div class="tinyeditor-control" title="Insert Image" style="background-position: 0px -600px;" ng-click="insertImage()"></div>
 	<div class="tinyeditor-control" title="Insert Horizontal Rule" style="background-position: 0px -630px;" ng-click="execCommand('inserthorizontalrule')"></div>
 	<div class="tinyeditor-control" title="Insert Hyperlink" style="background-position: 0px -660px;" ng-click="insertLink()"></div>
