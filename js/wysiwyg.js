@@ -112,7 +112,7 @@ angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 		onPick: '&'
 	    },
 	    restrict: 'AE',
-	    template: '<ul ng-show="show" class="colors-grid"><li style="background-color: {{color}};" title: "{{color}}" ng-repeat="color in colors" ng-click="pick(color)"></li></ul>'
+	    template: '<ul ng-show="show" class="colors-grid"><li ng-style="{\'background-color\': color}" title: "{{color}}" ng-repeat="color in colors" ng-click="pick(color)"></li></ul>'
 	}
     }
 ]);
