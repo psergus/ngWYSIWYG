@@ -163,8 +163,21 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 		scope.execCommand('insertimage', val);
 	    }
 	    $element.ready(function() {
+		function makeUnselectable(node) {
+		    if (node.nodeType == 1) {
+			node.setAttribute("unselectable", "on");
+			node.unselectable = 'on';
+		    }
+		    var child = node.firstChild;
+		    while (child) {
+			makeUnselectable(child);
+			child = child.nextSibling;
+		    }
+		}
 		//IE fix
-		angular.forEach($element.find('div.tinyeditor-control'), function(el) { el.unselectable = 'on'; });
+		for(var i = 0; i < document.getElementsByClassName('tinyeditor-header').length; i += 1) {
+		    makeUnselectable(document.getElementsByClassName("tinyeditor-header")[i]);
+		}
 	    });
 	}
 	return {
