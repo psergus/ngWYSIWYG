@@ -162,6 +162,10 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 		var val = prompt('Please enter the picture URL', 'http://');
 		scope.execCommand('insertimage', val);
 	    }
+	    $element.ready(function() {
+		//IE fix
+		angular.forEach($element.find('div.tinyeditor-control'), function(el) { el.unselectable = 'on'; });
+	    });
 	}
 	return {
 	    link: linker,
