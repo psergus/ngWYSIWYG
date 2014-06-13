@@ -8,8 +8,18 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 .tinyeditor-size {margin:0 3px}
 .tinyeditor-style {margin-right:12px}
 .tinyeditor-divider {float:left; width:1px; height:30px; background:#ccc}
-.tinyeditor-control {float:left; width:34px; height:30px; cursor:pointer; background-image:url(../images/icons.png)}
-.tinyeditor-control:hover {background-color:#fff; background-position:30px 0}
+.tinyeditor-control {
+    float:left; 
+    width:34px; 
+    height:30px; 
+    cursor:pointer; 
+    background-image:url(/images/tinyeditor/icons.png);
+    background-position-x: 0px;
+}
+.tinyeditor-control:hover {
+    background-color:#fff;
+    background-position-x: 34px;
+}
 .tinyeditor-footer {height:32px; border-top:1px solid #bbb; background:#f5f5f5}
 .toggle {float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666}
 .toggle:hover {background-color:#fff}
