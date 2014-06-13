@@ -8,4 +8,4 @@ Here is the <a href="http://psergus.github.io/ngWYSIWYG/">Demo</a>
 
 ## License
 
-MIT: http://rem.mit-license.org
+MIT
