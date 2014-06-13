@@ -104,6 +104,24 @@ angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 	    scope.pick = function( color ) {
 		scope.onPick({color: color});
 	    }
+	    element.ready(function() {
+		//real deal for IE
+		function makeUnselectable(node) {
+		    if (node.nodeType == 1) {
+			node.setAttribute("unselectable", "on");
+			node.unselectable = 'on';
+		    }
+		    var child = node.firstChild;
+		    while (child) {
+			makeUnselectable(child);
+			child = child.nextSibling;
+		    }
+		}
+		//IE fix
+		for(var i = 0; i < document.getElementsByClassName('colors-grid').length; i += 1) {
+		    makeUnselectable(document.getElementsByClassName("colors-grid")[i]);
+		}
+	    });
 	}
 	return {
 	    link: linker,
@@ -112,7 +130,7 @@ angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 		onPick: '&'
 	    },
 	    restrict: 'AE',
-	    template: '<ul ng-show="show" class="colors-grid"><li ng-style="{\'background-color\': color}" title: "{{color}}" ng-repeat="color in colors" ng-click="pick(color)"></li></ul>'
+	    template: '<ul ng-show="show" class="colors-grid"><li ng-style="{\'background-color\': color}" title: "{{color}}" ng-repeat="color in colors" unselectable="on" ng-click="pick(color)"></li></ul>'
 	}
     }
 ]);
