@@ -1,5 +1,5 @@
 <div class="tinyeditor">
-    <div class="tinyeditor-header">
+    <div class="tinyeditor-header" ng-hide="editMode">
 	<div class="tinyeditor-control" title="Bold" style="background-position-y: -120px;" ng-click="execCommand('bold')"></div>
 	<div class="tinyeditor-control" title="Italic" style="background-position-y: -150px;" ng-click="execCommand('italic')"></div>
 	<div class="tinyeditor-control" title="Underline" style="background-position-y: -180px;" ng-click="execCommand('underline')"></div>
@@ -17,7 +17,7 @@
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Remove Formatting" style="background-position-y: -720px;" ng-click="execCommand('removeformat')"></div>
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Undo" style="background-position-y: -540px;" ng-click="execCommand('undo')"></div>
 	<div class="tinyeditor-control" title="Redo" style="background-position-y: -570px;" ng-click="execCommand('redo')"></div></div>
-    <div class="tinyeditor-header">
+    <div class="tinyeditor-header" ng-hide="editMode">
 	<select class="tinyeditor-font" ng-model="font" ng-options="a as a for a in fonts"><option value="">Font</option></select>
 	<select class="tinyeditor-size" ng-model="fontsize" ng-options="a as a for a in fontsizes"><option value="">...</option></select>
 	<select class="tinyeditor-style" ng-model="textstyle" ng-options="s.key as s.name for s in styles"><option value="">Style</option></select>
@@ -36,7 +36,7 @@
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Print" style="background-position-y: -750px;" ng-click="execCommand('print')"></div>
     </div>
     <div>
-	<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 300px;" ng-show="editMode" ng-model="content"></textarea>
+	<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 300px;" ng-show="editMode" ng-model="content"></textarea>
 	<iframe style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 300px;" ng-hide="editMode" wframe="" ng-model="content"></iframe>
     </div>
     <div class="tinyeditor-footer">
