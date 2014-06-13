@@ -13,7 +13,7 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
     width:34px; 
     height:30px; 
     cursor:pointer; 
-    background-image:url(/images/tinyeditor/icons.png);
+    background-image:url(../images/icons.png);
     background-position-x: 0px;
 }
 .tinyeditor-control:hover {
