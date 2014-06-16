@@ -22,7 +22,7 @@ I am researching this, but using it with Jquery and passing Javascript code into
 
 ### Why iFrame?
 
-A real rich text editor must reflect the true stage of the editing content. Any CSS and/or Javascript on the page must not overide the specifics of the content.
+A real rich text editor must reflect the true stage of the editing content. Any CSS and/or Javascript on the host page must not overide the specifics of the content.
 Moreover, iframe allows to issolate your security issues (any possible Javascript code in the content may polute your window's scope).
 
 ### Issues?
