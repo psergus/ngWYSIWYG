@@ -27,7 +27,7 @@ Moreover, iframe allows to issolate your security issues (any possible Javascrip
 
 ### Issues?
 
-If you find any, please let me know by sumbitting and issue request. I will be working on it actively.
+If you find any, please let me know by sumbitting an issue request. I will be working on it actively.
 
 ## Contributers
 
