@@ -26,7 +26,7 @@ If you find any, please let me know by sumbitting and issue request. I will be w
 
 ## Contributers
 
-Special thanks to all the contributions thus far! 
+Special thanks to all the contributions! 
 
 
 ## License
