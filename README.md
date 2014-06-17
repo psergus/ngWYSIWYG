@@ -31,8 +31,7 @@ If you find any, please let me know by sumbitting an issue request. I will be wo
 
 ## Contributers
 
-Special thanks to all the contributions! 
-
+Contributions are welcome and special thanks to all the contributions!
 
 ## License
 
