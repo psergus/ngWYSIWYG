@@ -23,7 +23,8 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    
 	    //model --> view
 	    ctrl.$render = function() {
-		$body.html(ctrl.$viewValue || '');
+		//$body.html(ctrl.$viewValue || ''); //not friendly with jQuery. snap you jQuery
+		$body[0].innerHTML = ctrl.$viewValue || '';
 	    }
 	    
 	    scope.sync = function() {

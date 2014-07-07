@@ -11,9 +11,6 @@ Here is the <a href="http://psergus.github.io/ngWYSIWYG/">Demo</a>
 1. `AngularJS` ≥ `1.2.x`
 2. `Angular Sanitize` ≥ `1.2.x`
 
-### Not recommended library
-I am researching this, but using it with Jquery and passing Javascript code into the source code of the editing content will result in evaluation of the Javascript code and immediate execution. IMHO, this is a really bad deal from JQuery.
-
 ### Usage
 
 1. Include wysiwyg.js in your project using script tags.
