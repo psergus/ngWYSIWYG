@@ -2,6 +2,8 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 #tinyeditor {border:none; margin:0; padding:0; font:14px 'Courier New',Verdana}
 .tinyeditor {border:1px solid #bbb; padding:0 1px 1px; font:12px Verdana,Arial}
 .tinyeditor iframe {border:none; background: white; overflow-x:hidden}
+.tinyeditor .sizer { min-height: 200px; height: 400px; position: relative; }
+.tinyeditor .resizer { background: url(../images/resize.gif) 15px 15px no-repeat; float: right; height: 32px; width: 32px; cursor: ns-resize; }
 .tinyeditor-header {height:31px; border-bottom:1px solid #bbb; background:url(../images/header-bg.gif) repeat-x; padding-top:1px}
 .tinyeditor-header select {float:left; margin-top:5px}
 .tinyeditor-font {margin-left:12px}
@@ -27,3 +29,6 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 .colors-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 192px; border: black solid 2px; padding: 0; margin: 0; }
 .colors-grid > li { list-style: none; border: white solid 2px; float: left; width: 20px; height: 20px; }
 .colors-grid > li:hover { opacity: 0.7; }
+.symbols-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 384px; border: black solid 2px; padding: 0; margin: 0; z-index: 100;}
+.symbols-grid > li { list-style: none; border: rgb(231, 231, 231) solid 1px; float: left; width: 30px; height: 30px; text-align: center; font-size: 1.3em; }
+.symbols-grid > li:hover { opacity: 0.7; font-size: 1.7em; }

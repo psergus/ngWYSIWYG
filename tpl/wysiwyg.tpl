@@ -31,13 +31,16 @@
 	<div class="tinyeditor-divider"></div>
 	<div class="tinyeditor-control" title="Insert Image" style="background-position-y: -600px;" ng-click="insertImage()"></div>
 	<div class="tinyeditor-control" title="Insert Horizontal Rule" style="background-position-y: -630px;" ng-click="execCommand('inserthorizontalrule')"></div>
+	<div class="tinyeditor-control" title="Insert Special Symbol" style="background-position-y: -838px; position: relative;" ng-click="showSpecChars = !showSpecChars">
+	    <symbols-grid show="showSpecChars" on-pick="insertSpecChar(symbol)"><symbols-grid>
+	</div>
 	<div class="tinyeditor-control" title="Insert Hyperlink" style="background-position-y: -660px;" ng-click="insertLink()"></div>
 	<div class="tinyeditor-control" title="Remove Hyperlink" style="background-position-y: -690px;" ng-click="execCommand('unlink')"></div>
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Print" style="background-position-y: -750px;" ng-click="execCommand('print')"></div>
     </div>
-    <div>
-	<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 300px;" ng-show="editMode" ng-model="content"></textarea>
-	<iframe style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 300px;" ng-hide="editMode" wframe="" ng-model="content"></iframe>
+    <div class="sizer" ce-resize>
+	<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 100%;" ng-show="editMode" ng-model="content"></textarea>
+	<iframe style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;" ng-hide="editMode" wframe="" ng-model="content"></iframe>
     </div>
     <div class="tinyeditor-footer">
 	<div ng-switch="editMode" ng-click="editMode = !editMode" class="toggle"><span ng-switch-when="true">wysiwyg</span><span ng-switch-default>source</span></div>

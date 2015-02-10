@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ngWYSIWYG', []);
+angular.module('ngWYSIWYG', ['ngSanitize']);
 
 angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', 
     function($compile, $timeout) {
@@ -28,53 +28,54 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    }
 	    
 	    scope.sync = function() {
-		scope.$evalAsync(function(scope) {
-		    ctrl.$setViewValue($body.html());
-		});
+			scope.$evalAsync(function(scope) {
+			    ctrl.$setViewValue($body.html());
+			});
 	    }
 	    
 	    //view --> model
 	    $body.bind('blur keyup change paste', function() {
-		scope.$apply(function blurkeyup() {
-		    ctrl.$setViewValue($body.html());
-		});
+			scope.$apply(function blurkeyup() {
+			    ctrl.$setViewValue($body.html());
+			});
 	    });
 	    
 
 	    scope.range = null;
 	    scope.getSelection = function() {
-		if($document.getSelection) {
-		    var sel = $document.getSelection();
-		    if(sel.getRangeAt && sel.rangeCount) {
-			scope.range = sel.getRangeAt(0);
-		    }
-		}
+			if($document.getSelection) {
+			    var sel = $document.getSelection();
+			    if(sel.getRangeAt && sel.rangeCount) {
+				scope.range = sel.getRangeAt(0);
+			    }
+			}
 	    }
 	    scope.restoreSelection = function() {
-		if(scope.range && $document.getSelection) {
-		    var sel = $document.getSelection();
-		    sel.removeAllRanges();
-		    sel.addRange(scope.range);
-		}
+			if(scope.range && $document.getSelection) {
+			    var sel = $document.getSelection();
+			    sel.removeAllRanges();
+			    sel.addRange(scope.range);
+			}
 	    }
 	    
 	    scope.$on('execCommand', function(e, cmd) {
-		console.log('execCommand: ');
-		console.log(cmd);
-		//scope.getSelection();
-		var sel = $document.selection; //http://stackoverflow.com/questions/11329982/how-refocus-when-insert-image-in-contenteditable-divs-in-ie
-		if (sel) {
-		    var textRange = sel.createRange();
-		    $document.execCommand(cmd.command, 0, cmd.arg);
-		    textRange.collapse(false);
-		    textRange.select();
-		}
-		else {
-		    $document.execCommand(cmd.command, 0, cmd.arg);
-		}
-		//scope.restoreSelection();
-		$document.body.focus();
-		scope.sync();
+			console.log('execCommand: ');
+			console.log(cmd);
+			$element[0].contentDocument.body.focus();
+			//scope.getSelection();
+			var sel = $document.selection; //http://stackoverflow.com/questions/11329982/how-refocus-when-insert-image-in-contenteditable-divs-in-ie
+			if (sel) {
+			    var textRange = sel.createRange();
+			    $document.execCommand(cmd.command, 0, cmd.arg);
+			    textRange.collapse(false);
+			    textRange.select();
+			}
+			else {
+			    $document.execCommand(cmd.command, 0, cmd.arg);
+			}
+			//scope.restoreSelection();
+			$document.body.focus();
+			scope.sync();
 	    });
 	    
 	    //init
@@ -98,6 +99,68 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	}
     }
 ]);
+// kudos to http://codereview.stackexchange.com/questions/61847/draggable-resizeable-box
+angular.module("ngWYSIWYG").directive("ceResize", ['$document', function($document) {
+	return function($scope, $element, $attr) {
+		//Reference to the original
+		var $mouseDown;
+
+		// Function to manage resize up event
+		var resizeUp = function($event) {
+			var margin = 50,
+			lowest = $mouseDown.top + $mouseDown.height - margin,
+			top = $event.pageY > lowest ? lowest : $event.pageY,
+			height = $mouseDown.top - top + $mouseDown.height;
+
+			$element.css({
+				top: top + "px",
+				height: height + "px"
+			});
+		};
+		// Function to manage resize down event
+		var resizeDown = function($event) {
+			var margin = 50,
+			uppest = $element[0].offsetTop + margin,
+			height = $event.pageY > uppest ? $event.pageY - $element[0].offsetTop : margin;
+
+			$element.css({
+				height: height + "px"
+			});
+		};
+
+
+		var createResizer = function createResizer( className , handlers ) {
+			var newElement = angular.element( '<span class="' + className + '"></span>' );
+			$element.append(newElement);
+			newElement.on("mousedown", function($event) {
+
+				$document.on("mousemove", mousemove);
+				$document.on("mouseup", mouseup);
+
+				//Keep the original event around for up / left resizing
+				$mouseDown = $event;
+				$mouseDown.top = $element[0].offsetTop;
+				$mouseDown.left = $element[0].offsetLeft
+				$mouseDown.width = $element[0].offsetWidth;
+				$mouseDown.height = $element[0].offsetHeight;
+
+				function mousemove($event) {
+				event.preventDefault();
+				for( var i = 0 ; i < handlers.length ; i++){
+				handlers[i]( $event );
+				}
+				}
+
+				function mouseup() {
+					$document.off("mousemove", mousemove);
+					$document.off("mouseup", mouseup);
+				}
+			});
+		}
+
+		createResizer( 'resizer' , [ resizeDown ,  resizeDown ] );
+	};
+}]);
 angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
     function($compile, $document) {
 	var linker = function( scope, element, attrs, ctrl ) {
@@ -144,6 +207,52 @@ angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 	}
     }
 ]);
+angular.module('ngWYSIWYG').directive('symbolsGrid', ['$compile', '$document', '$sce',
+    function($compile, $document, $sce) {
+        var linker = function( scope, element, attrs, ctrl ) {
+            //click away
+            $document.on("click", function() {
+                scope.$apply(function() {
+                    scope.show = false;
+                });
+            });
+            element.parent().bind('click', function(e) {
+                e.stopPropagation();
+            });
+            scope.symbols = ['&iexcl;', '&iquest;', '&ndash;', '&mdash;', '&raquo;', '&laquo;', '&copy;', '&divide;', '&micro;', '&para;', '&plusmn;', '&cent;', '&euro;', '&pound;', '&reg;', '&sect;', '&trade;', '&yen;', '&deg;', '&forall;', '&part;', '&exist;', '&empty;', '&nabla;', '&isin;', '&notin;', '&ni;', '&prod;', '&sum;', '&uarr;', '&rarr;', '&darr;', '&spades;', '&clubs;', '&hearts;', '&diams;', '&aacute;', '&agrave;', '&acirc;', '&aring;', '&atilde;', '&auml;', '&aelig;', '&ccedil;', '&eacute;', '&egrave;', '&ecirc;', '&euml;', '&iacute;', '&igrave;', '&icirc;', '&iuml;', '&ntilde;', '&oacute;', '&ograve;', '&ocirc;', '&oslash;', '&otilde;', '&ouml;', '&szlig;', '&uacute;', '&ugrave;', '&ucirc;', '&uuml;', '&yuml;'];
+            scope.pick = function( symbol ) {
+                scope.onPick({symbol: symbol});
+            }
+            element.ready(function() {
+                //real deal for IE
+                function makeUnselectable(node) {
+                    if (node.nodeType == 1) {
+                        node.setAttribute("unselectable", "on");
+                        node.unselectable = 'on';
+                    }
+                    var child = node.firstChild;
+                    while (child) {
+                        makeUnselectable(child);
+                        child = child.nextSibling;
+                    }
+                }
+                //IE fix
+                for(var i = 0; i < document.getElementsByClassName('symbols-grid').length; i += 1) {
+                    makeUnselectable(document.getElementsByClassName("symbols-grid")[i]);
+                }
+            });
+        }
+        return {
+            link: linker,
+            scope: {
+                show: '=',
+                onPick: '&'
+            },
+            restrict: 'AE',
+            template: '<ul ng-show="show" class="symbols-grid"><li ng-repeat="symbol in symbols" unselectable="on" ng-click="pick(symbol)" ng-bind-html="symbol"></li></ul>'
+        }
+    }
+]);
 	
 angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', 
     function($compile, $timeout) {
@@ -171,41 +280,45 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 		}
 	    });
 	    scope.showFontColors = false;
-	    scope.setFontColor = function( color ) {
-		scope.execCommand('foreColor', color);
+		    scope.setFontColor = function( color ) {
+			scope.execCommand('foreColor', color);
 	    }
 	    scope.showBgColors = false;
-	    scope.setBgColor = function( color ) {
-		scope.execCommand('hiliteColor', color);
+		    scope.setBgColor = function( color ) {
+			scope.execCommand('hiliteColor', color);
 	    }
 	    
 	    scope.execCommand = function(cmd, arg) {
-		scope.$emit('execCommand', {command: cmd, arg: arg});
+			scope.$emit('execCommand', {command: cmd, arg: arg});
 	    }
-	    scope.insertLink = function() {
-		var val = prompt('Please enter the URL', 'http://');
-		scope.execCommand('createlink', val);
+        scope.showSpecChars = false;
+        scope.insertSpecChar = function(symbol) {
+            scope.execCommand('insertHTML', symbol);
+        }	    
+        scope.insertLink = function() {
+			var val = prompt('Please enter the URL', 'http://');
+			scope.execCommand('createlink', val);
 	    }
 	    scope.insertImage = function() {
 		var val = prompt('Please enter the picture URL', 'http://');
 		scope.execCommand('insertimage', val);
 	    }
 	    $element.ready(function() {
-		function makeUnselectable(node) {
-		    if (node.nodeType == 1) {
-			node.setAttribute("unselectable", "on");
-			node.unselectable = 'on';
-		    }
-		    var child = node.firstChild;
-		    while (child) {
-			makeUnselectable(child);
-			child = child.nextSibling;
-		    }
-		}
-		//IE fix
-		for(var i = 0; i < document.getElementsByClassName('tinyeditor-header').length; i += 1) {
-		    makeUnselectable(document.getElementsByClassName("tinyeditor-header")[i]);
-		}
+			function makeUnselectable(node) {
+			    if (node.nodeType == 1) {
+					node.setAttribute("unselectable", "on");
+					node.unselectable = 'on';
+			    }
+			    var child = node.firstChild;
+			    while (child) {
+					makeUnselectable(child);
+					child = child.nextSibling;
+			    }
+			}
+			//IE fix
+			for(var i = 0; i < document.getElementsByClassName('tinyeditor-header').length; i += 1) {
+			    makeUnselectable(document.getElementsByClassName("tinyeditor-header")[i]);
+			}
 	    });
 	}
 	return {
