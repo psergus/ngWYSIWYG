@@ -88,7 +88,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
 			    //console.log(computedStyle.getPropertyValue("font-weight"));
 			    var elementStyle = {
-				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold'),
+				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) == 700),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
 				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
 				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
@@ -100,7 +100,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			    };
 			    //dispatch upward the through the scope chain
 			    scope.$emit('cursor-position', elementStyle);
-			    //console.log( elementStyle );
+			    //console.log( JSON.stringify(elementStyle) );
 			}
 		    },
 		100/*ms*/, true /*invoke apply*/);
