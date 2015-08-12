@@ -88,7 +88,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
 			    //console.log(computedStyle.getPropertyValue("font-weight"));
 			    var elementStyle = {
-				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) == 700),
+				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) >= 700),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
 				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
 				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
