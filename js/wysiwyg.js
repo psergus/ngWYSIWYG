@@ -43,6 +43,19 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 		    range.collapse(isStart);
 		    return range.parentElement();
 		}
+		else if (doc.getSelection) {
+		    //firefox
+		    sel = doc.getSelection();
+		    if (sel.rangeCount > 0) {
+			range = sel.getRangeAt(0);
+			//console.log(range);
+			container = range[isStart ? "startContainer" : "endContainer"];
+			if (container.nodeType === 3) {
+			    container = container.parentNode;
+			}
+			//console.log(container);
+		    }
+		}
 		else if (win.getSelection) {
 		    // Other browsers
 		    sel = win.getSelection();
@@ -67,11 +80,13 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 		    $timeout.cancel(debounce);
 		}
 		debounce = $timeout(function blurkeyup() {
-			    ctrl.$setViewValue($body.html());
-			    //check the caret position
-			    //http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
-			    var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+			ctrl.$setViewValue($body.html());
+			//check the caret position
+			//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
+			var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+			if(el) {
 			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
+			    //console.log(computedStyle.getPropertyValue("font-weight"));
 			    var elementStyle = {
 				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold'),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
@@ -86,7 +101,8 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			    //dispatch upward the through the scope chain
 			    scope.$emit('cursor-position', elementStyle);
 			    //console.log( elementStyle );
-			},
+			}
+		    },
 		100/*ms*/, true /*invoke apply*/);
 	    });
 	    
