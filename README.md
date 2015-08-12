@@ -57,6 +57,7 @@ Maintenance
 
 - Current cursor/caret position style reflection on the toolbar
 - Material Design
+- Implement tests
 - Look for the Angular 2.0
 
 ### Issues?
