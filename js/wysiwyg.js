@@ -33,11 +33,61 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			});
 	    }
 	    
+	    
+	    var getSelectionBoundaryElement = function(win, isStart) {
+		var range, sel, container = null;
+		var doc = win.document;
+		if (doc.selection) {
+		    // IE branch
+		    range = doc.selection.createRange();
+		    range.collapse(isStart);
+		    return range.parentElement();
+		}
+		else if (win.getSelection) {
+		    // Other browsers
+		    sel = win.getSelection();
+		    if (sel.rangeCount > 0) {
+			range = sel.getRangeAt(0);
+			container = range[isStart ? "startContainer" : "endContainer"];
+			
+			// Check if the container is a text node and return its parent if so
+			if (container.nodeType === 3) {
+			    container = container.parentNode;
+			}
+		    }
+		}
+		return container;
+	    }
+	    
+	    var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
 	    //view --> model
 	    $body.bind('blur keyup change paste', function() {
-			scope.$apply(function blurkeyup() {
+		//lets debounce it
+		if(debounce) {
+		    $timeout.cancel(debounce);
+		}
+		debounce = $timeout(function blurkeyup() {
 			    ctrl.$setViewValue($body.html());
-			});
+			    //check the caret position
+			    //http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
+			    var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
+			    var elementStyle = {
+				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold'),
+				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
+				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
+				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
+				'color': computedStyle.getPropertyValue("color"),
+				'align': computedStyle.getPropertyValue("text-align"),
+				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
+				'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
+				'background': computedStyle.getPropertyValue("background-color")
+			    };
+			    //dispatch upward the through the scope chain
+			    scope.$emit('cursor-position', elementStyle);
+			    //console.log( elementStyle );
+			},
+		100/*ms*/, true /*invoke apply*/);
 	    });
 	    
 
@@ -258,6 +308,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
     function($compile, $timeout) {
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    scope.editMode = false;
+	    scope.cursorStyle = {}; //current cursor/caret position style
 	    scope.fonts = ['Verdana','Arial', 'Arial Black', 'Arial Narrow', 'Courier New', 'Century Gothic', 'Comic Sans MS', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Webdings','Trebuchet MS'];
 	    scope.$watch('font', function(newValue) {
 		if(newValue) {
@@ -319,6 +370,11 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 			for(var i = 0; i < document.getElementsByClassName('tinyeditor-header').length; i += 1) {
 			    makeUnselectable(document.getElementsByClassName("tinyeditor-header")[i]);
 			}
+	    });
+	    //catch the cursort position style
+	    scope.$on('cursor-position', function(event, data) {
+		//console.log('cursor-position', data);
+		scope.cursorStyle = data;
 	    });
 	}
 	return {

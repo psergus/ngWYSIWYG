@@ -1,11 +1,11 @@
 <div class="tinyeditor">
     <div class="tinyeditor-header" ng-hide="editMode">
-	<div class="tinyeditor-control" title="Bold" style="background-position: 34px -120px;" ng-click="execCommand('bold')"></div>
-	<div class="tinyeditor-control" title="Italic" style="background-position: 34px -150px;" ng-click="execCommand('italic')"></div>
-	<div class="tinyeditor-control" title="Underline" style="background-position: 34px -180px;" ng-click="execCommand('underline')"></div>
-	<div class="tinyeditor-control" title="Strikethrough" style="background-position: 34px -210px;" ng-click="execCommand('strikethrough')"></div>
-	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Subscript" style="background-position: 34px -240px;" ng-click="execCommand('subscript')"></div>
-	<div class="tinyeditor-control" title="Superscript" style="background-position: 34px -270px;" ng-click="execCommand('superscript')"></div>
+	<div class="tinyeditor-control" title="Bold" style="background-position: 34px -120px;" ng-class="{'pressed': cursorStyle.bold}" ng-click="execCommand('bold')"></div>
+	<div class="tinyeditor-control" title="Italic" style="background-position: 34px -150px;" ng-class="{'pressed': cursorStyle.italic}" ng-click="execCommand('italic')"></div>
+	<div class="tinyeditor-control" title="Underline" style="background-position: 34px -180px;" ng-class="{'pressed': cursorStyle.underline}" ng-click="execCommand('underline')"></div>
+	<div class="tinyeditor-control" title="Strikethrough" style="background-position: 34px -210px;" ng-class="{'pressed': cursorStyle.strikethrough}" ng-click="execCommand('strikethrough')"></div>
+	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Subscript" style="background-position: 34px -240px;" ng-class="{'pressed': cursorStyle.sub}" ng-click="execCommand('subscript')"></div>
+	<div class="tinyeditor-control" title="Superscript" style="background-position: 34px -270px;" ng-class="{'pressed': cursorStyle.super}" ng-click="execCommand('superscript')"></div>
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Insert Ordered List" style="background-position: 34px -300px;" ng-click="execCommand('insertorderedlist')"></div>
 	<div class="tinyeditor-control" title="Insert Unordered List" style="background-position: 34px -330px;" ng-click="execCommand('insertunorderedlist')"></div>
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Outdent" style="background-position: 34px -360px;" ng-click="execCommand('outdent')"></div>

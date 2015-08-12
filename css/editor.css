@@ -22,6 +22,9 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
     background-color:#fff;
     background-position-x: 34px;
 }
+.tinyeditor-control.pressed {
+    background-color:#D0CFCF;
+}
 .tinyeditor-footer {height:32px; border-top:1px solid #bbb; background:#f5f5f5}
 .toggle {float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666}
 .toggle:hover {background-color:#fff}
