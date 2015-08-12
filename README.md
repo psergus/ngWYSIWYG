@@ -6,12 +6,37 @@ I took images and layout from the <a href="https://github.com/jessegreathouse/Ti
 
 Here is the <a href="http://psergus.github.io/ngWYSIWYG/">Demo</a>
 
+Installation
+=========================
+
 ## Requirements
 
 1. `AngularJS` ≥ `1.2.x`
 2. `Angular Sanitize` ≥ `1.2.x`
 
-### Usage
+### Bower
+
+````
+$ bower install ngWYSIWYG --save
+```
+
+Include the ngWYSIWYG files in your index.html:
+````
+<link rel="stylesheet" href="bower_components/ngWYSIWYG/css/editor.css" />
+<script src="bower_components/ngWYSIWYG/js/wysiwyg.js"></script>
+```
+
+Add it as module to your app.js:
+
+````
+['ngWYSIWYG']
+````
+
+Use it wherever you want:
+
+```<wysiwyg-edit content="your_variable"></wysiwyg-edit>```
+
+### Simple download (aka git clone/fork)
 
 1. Include wysiwyg.js in your project using script tags.
 2. Add dependency to `ngWYSIWYG` to your app module. Example: ```angular.module('myApp', ['ngWYSIWYG'])```.
