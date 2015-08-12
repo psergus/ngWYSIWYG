@@ -22,25 +22,27 @@ Installation
 
 ### Bower
 
-````
+````Shell
 $ bower install ngWYSIWYG --save
 ```
 
 Include the ngWYSIWYG files in your index.html:
-````
+````HTML
 <link rel="stylesheet" href="bower_components/ngWYSIWYG/css/editor.css" />
 <script src="bower_components/ngWYSIWYG/js/wysiwyg.js"></script>
 ```
 
 Add it as module to your app.js:
 
-````
+````JavaScript
 ['ngWYSIWYG']
 ````
 
 Use it wherever you want:
 
-```<wysiwyg-edit content="your_variable"></wysiwyg-edit>```
+```HTML
+<wysiwyg-edit content="your_variable"></wysiwyg-edit>
+```
 
 ### Simple download (aka git clone/fork)
 
@@ -50,6 +52,12 @@ Use it wherever you want:
 
 Maintenance
 =========================
+
+### Roadmap
+
+- Current cursor/caret position style reflection on the toolbar
+- Material Design
+- Look for the Angular 2.0
 
 ### Issues?
 
