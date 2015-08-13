@@ -471,7 +471,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    scope.$on('cursor-position', function(event, data) {
 		//console.log('cursor-position', data);
 		scope.cursorStyle = data;
-		scope.font = data.font;
+		scope.font = data.font.replace(/(')/g, ''); //''' replace single quotes
 		scope.fontsize = scope.mapFontSize[data.size]? scope.mapFontSize[data.size] : 0;
 	    });
 	}
