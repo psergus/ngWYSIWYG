@@ -77,7 +77,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    
 	    var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
 	    //view --> model
-	    $body.bind('blur keyup change paste', function() {
+	    $body.bind('blur click keyup change paste', function() {
 		//lets debounce it
 		if(debounce) {
 		    $timeout.cancel(debounce);
@@ -214,7 +214,7 @@ angular.module("ngWYSIWYG").directive("ceResize", ['$document', function($docume
 				$mouseDown.height = $element[0].offsetHeight;
 
 				function mousemove($event) {
-				event.preventDefault();
+				$event.preventDefault();
 				for( var i = 0 ; i < handlers.length ; i++){
 				handlers[i]( $event );
 				}
