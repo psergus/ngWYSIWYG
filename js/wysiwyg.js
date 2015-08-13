@@ -13,10 +13,10 @@ var template = "<div class=\"tinyeditor\">" +
 	    "<div class=\"tinyeditor-control\" title=\"Subscript\" style=\"background-position: 34px -240px;\" ng-class=\"{\'pressed\': cursorStyle.sub}\"ng-click=\"execCommand(\'subscript\')\"></div>" +
 	    "<div class=\"tinyeditor-control\" title=\"Superscript\" style=\"background-position: 34px -270px;\" ng-class=\"{\'pressed\': cursorStyle.super}\" ng-click=\"execCommand(\'superscript\')\"></div>" +
 	    "<div class=\"tinyeditor-divider\"></div>" +
-	    "<div class=\"tinyeditor-control\" title=\"Left Align\" style=\"background-position: 34px -420px;\" ng-class=\"{\'pressed\': cursorStyle.align == 'left'}\" ng-click=\"execCommand(\'justifyleft\')\"></div>" +
-	    "<div class=\"tinyeditor-control\" title=\"Center Align\" style=\"background-position: 34px -450px;\" ng-class=\"{\'pressed\': cursorStyle.align == 'center'}\" ng-click=\"execCommand(\'justifycenter\')\"></div>" +
-	    "<div class=\"tinyeditor-control\" title=\"Right Align\" style=\"background-position: 34px -480px;\" ng-class=\"{\'pressed\': cursorStyle.align == 'right'}\" ng-click=\"execCommand(\'justifyright\')\"></div>" +
-	    "<div class=\"tinyeditor-control\" title=\"Block Justify\" style=\"background-position: 34px -510px;\" ng-class=\"{\'pressed\': cursorStyle.align == 'justify'}\" ng-click=\"execCommand(\'justifyfull\')\"></div>" +
+	    "<div class=\"tinyeditor-control\" title=\"Left Align\" style=\"background-position: 34px -420px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'left'}\" ng-click=\"execCommand(\'justifyleft\')\"></div>" +
+	    "<div class=\"tinyeditor-control\" title=\"Center Align\" style=\"background-position: 34px -450px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'center'}\" ng-click=\"execCommand(\'justifycenter\')\"></div>" +
+	    "<div class=\"tinyeditor-control\" title=\"Right Align\" style=\"background-position: 34px -480px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'right'}\" ng-click=\"execCommand(\'justifyright\')\"></div>" +
+	    "<div class=\"tinyeditor-control\" title=\"Block Justify\" style=\"background-position: 34px -510px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'justify'}\" ng-click=\"execCommand(\'justifyfull\')\"></div>" +
 	    "<div class=\"tinyeditor-divider\"></div>" +
 	"</div>" +
 	"<div class=\"tinyeditor-buttons-group\">" +
@@ -155,11 +155,10 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 				'font': computedStyle.getPropertyValue("font-family"),
 				'size': parseInt(computedStyle.getPropertyValue("font-size")),
 				'color': computedStyle.getPropertyValue("color"),
-				'align': computedStyle.getPropertyValue("text-align"),
 				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
 				'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
 				'background': computedStyle.getPropertyValue("background-color"),
-				'align': computedStyle.getPropertyValue("text-align")
+				'alignment': computedStyle.getPropertyValue("text-align")
 			    };
 			    //dispatch upward the through the scope chain
 			    scope.$emit('cursor-position', elementStyle);
