@@ -49,9 +49,9 @@ var template = "<div class=\"tinyeditor\">" +
 	    "<div class=\"tinyeditor-control\" title=\"Print\" style=\"background-position: 34px -750px;\" ng-click=\"execCommand(\'print\')\"></div>" +
 	"</div>" +
 	"<div class=\"tinyeditor-buttons-group\">" +
-	    "<select class=\"tinyeditor-font\" ng-model=\"font\" ng-options=\"a as a for a in fonts\"><option value=\"\">Font</option></select>" +
-	    "<select class=\"tinyeditor-size\" ng-model=\"fontsize\" ng-options=\"a as a for a in fontsizes\"><option value=\"\">Size</option></select>" +
-	    "<select class=\"tinyeditor-style\" ng-model=\"textstyle\" ng-options=\"s.key as s.name for s in styles\"><option value=\"\">Style</option></select>" +
+	    "<select class=\"tinyeditor-font\" ng-model=\"font\" ng-options=\"a as a for a in fonts\" ng-change=\"fontChange()\"><option value=\"\">Font</option></select>" +
+	    "<select class=\"tinyeditor-size\" ng-model=\"fontsize\" ng-options=\"a.key as a.name for a in fontsizes\" ng-change=\"sizeChange()\"><option value=\"\">Size</option></select>" +
+	    "<select class=\"tinyeditor-style\" ng-model=\"textstyle\" ng-options=\"s.key as s.name for s in styles\" ng-change=\"styleChange()\"><option value=\"\">Style</option></select>" +
 	"</div>" +
 	"<div style=\"clear: both;\"></div>" +
     "</div>" +
@@ -147,14 +147,13 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			var el = getSelectionBoundaryElement($element[0].contentWindow, true);
 			if(el) {
 			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
-			    //console.log(computedStyle.getPropertyValue("font-weight"));
 			    var elementStyle = {
 				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) >= 700),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
 				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
 				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
 				'font': computedStyle.getPropertyValue("font-family"),
-				'size': computedStyle.getPropertyValue("font-size"),
+				'size': parseInt(computedStyle.getPropertyValue("font-size")),
 				'color': computedStyle.getPropertyValue("color"),
 				'align': computedStyle.getPropertyValue("text-align"),
 				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
@@ -390,26 +389,43 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    scope.editMode = false;
 	    scope.cursorStyle = {}; //current cursor/caret position style
 	    scope.fonts = ['Verdana','Arial', 'Arial Black', 'Arial Narrow', 'Courier New', 'Century Gothic', 'Comic Sans MS', 'Georgia', 'Impact', 'Tahoma', 'Times', 'Times New Roman', 'Webdings','Trebuchet MS'];
+	    /*
 	    scope.$watch('font', function(newValue) {
 		if(newValue) {
 		    scope.execCommand( 'fontname', newValue );
 		    scope.font = '';
 		}
 	    });
-	    scope.fontsizes = [1, 2, 3, 4, 5, 6, 7, 10, 15, 20, 25, 30, 40];
+	    */
+	    scope.fontChange = function() {
+		scope.execCommand( 'fontname', scope.font );
+		//scope.font = '';
+	    }
+	    scope.fontsizes = [{key: 1, name: 'x-small'}, {key: 2, name: 'small'}, {key: 3, name: 'normal'}, {key: 4, name: 'large'}, {key: 5, name: 'x-large'}, {key: 6, name: 'xx-large'}, {key: 7, name: 'xxx-large'}];
+	    scope.mapFontSize = { 10: 1, 13: 2, 16: 3, 18: 4, 24: 5, 32: 6, 48: 7};
+	    scope.sizeChange = function() {
+		scope.execCommand( 'fontsize', scope.fontsize );
+	    }
+	    /*
 	    scope.$watch('fontsize', function(newValue) {
 		if(newValue) {
 		    scope.execCommand( 'fontsize', newValue );
 		    scope.fontsize = '';
 		}
 	    });
+	    */
 	    scope.styles = [{name: 'Paragraph', key: '<p>'}, {name: 'Header 1', key: '<h1>'}, {name: 'Header 2', key: '<h2>'}, {name: 'Header 3', key: '<h3>'}, {name: 'Header 4', key: '<h4>'}, {name: 'Header 5', key: '<h5>'}, {name: 'Header 6', key: '<h6>'}];
+	    scope.styleChange = function() {
+		scope.execCommand( 'formatblock', scope.fontsize );
+	    }
+	    /*
 	    scope.$watch('textstyle', function(newValue) {
 		if(newValue) {
 		    scope.execCommand( 'formatblock', newValue );
 		    scope.fontsize = '';
 		}
 	    });
+	    */
 	    scope.showFontColors = false;
 		    scope.setFontColor = function( color ) {
 			scope.execCommand('foreColor', color);
@@ -453,8 +469,10 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    });
 	    //catch the cursort position style
 	    scope.$on('cursor-position', function(event, data) {
-		console.log('cursor-position', data);
+		//console.log('cursor-position', data);
 		scope.cursorStyle = data;
+		scope.font = data.font;
+		scope.fontsize = scope.mapFontSize[data.size]? scope.mapFontSize[data.size] : 0;
 	    });
 	}
 	return {
