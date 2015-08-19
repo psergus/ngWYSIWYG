@@ -51,22 +51,22 @@ The first thing which is implemented is insert image delegation. By default the 
 there is a way to bring up a custom dialog box on the customer's side and return promise.
 
 ````JavaScript
-	    $scope.api = {
+	$scope.api = {
 		scope: $scope,
 		insertImage: function() {
-		    var deferred = $q.defer();
-		    $timeout(function() {
-			var val = prompt('Enter image url', 'http://');
-			if(val) {
-			    deferred.resolve('<img src="' + val + '" style="width: 30%;">');
-			}
-			else {
-			    deferred.reject(null);
-			}
-		    }, 1000);
-		    return deferred.promise;
+			var deferred = $q.defer();
+			$timeout(function() {
+				var val = prompt('Enter image url', 'http://');
+				if(val) {
+					deferred.resolve('<img src="' + val + '" style="width: 30%;">');
+				}
+				else {
+				    deferred.reject(null);
+				}
+			}, 1000);
+			return deferred.promise;
 		}
-	    };
+	};
 ````
 Make sure you feed the api object to the directive like this:
 
