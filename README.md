@@ -44,6 +44,36 @@ Use it wherever you want:
 <wysiwyg-edit content="your_variable"></wysiwyg-edit>
 ```
 
+## API
+
+There is an idea on the api functions to delegate some responsibilities to the customer's scope.
+The first thing which is implemented is insert image delegation. By default the directive uses a simple prompt function to accept image's url. However,
+there is a way to bring up a custom dialog box on the customer's side and return promise.
+
+````JavaScript
+	    $scope.api = {
+		scope: $scope,
+		insertImage: function() {
+		    var deferred = $q.defer();
+		    $timeout(function() {
+			var val = prompt('Enter image url', 'http://');
+			if(val) {
+			    deferred.resolve('<img src="' + val + '" style="width: 30%;">');
+			}
+			else {
+			    deferred.reject(null);
+			}
+		    }, 1000);
+		    return deferred.promise;
+		}
+	    };
+````
+Make sure you feed the api object to the directive like this:
+
+```HTML
+<wysiwyg-edit content="your_variable" api="api"></wysiwyg-edit>
+```
+
 ### Simple download (aka git clone/fork)
 
 1. Include wysiwyg.js in your project using script tags.

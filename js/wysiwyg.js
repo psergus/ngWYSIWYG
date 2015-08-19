@@ -382,8 +382,8 @@ angular.module('ngWYSIWYG').directive('symbolsGrid', ['$compile', '$document', '
     }
 ]);
 	
-angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', 
-    function($compile, $timeout) {
+angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$q',
+    function($compile, $timeout, $q) {
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    scope.editMode = false;
 	    scope.cursorStyle = {}; //current cursor/caret position style
@@ -437,17 +437,31 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    scope.execCommand = function(cmd, arg) {
 			scope.$emit('execCommand', {command: cmd, arg: arg});
 	    }
-        scope.showSpecChars = false;
-        scope.insertSpecChar = function(symbol) {
+	    scope.showSpecChars = false;
+	    scope.insertSpecChar = function(symbol) {
             scope.execCommand('insertHTML', symbol);
-        }	    
-        scope.insertLink = function() {
-			var val = prompt('Please enter the URL', 'http://');
-			scope.execCommand('createlink', val);
 	    }
+	    scope.insertLink = function() {
+		var val = prompt('Please enter the URL', 'http://');
+		if(val) scope.execCommand('createlink', val);
+	    }
+	    /*
+	    * insert image button
+	    */
 	    scope.insertImage = function() {
-		var val = prompt('Please enter the picture URL', 'http://');
-		scope.execCommand('insertimage', val);
+		var val;
+		if(scope.api && scope.api.insertImage && angular.isFunction(scope.api.insertImage)) {
+		    val = scope.api.insertImage.apply( scope.api.scope || null );
+		}
+		else {
+		    val = prompt('Please enter the picture URL', 'http://');
+		    val = '<img src="' + val + '">'; //we convert into HTML element.
+		}
+		//resolve the promise if any
+		$q.when(val).then( function(data) {
+		    //scope.execCommand('insertimage', val);
+		    scope.execCommand('insertHTML', data); //we insert image as an HTML element instead of giving the editor a direct command to insert an image with url
+		});
 	    }
 	    $element.ready(function() {
 			function makeUnselectable(node) {
@@ -477,7 +491,8 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	return {
 	    link: linker,
 	    scope: {
-		content: '='
+		content: '=', //this is our content which we want to edit
+		api: '=' //this is our api object
 	    },
 	    restrict: 'AE',
 	    replace: true,
