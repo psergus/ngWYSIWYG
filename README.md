@@ -51,6 +51,9 @@ The first thing which is implemented is insert image delegation. By default the 
 there is a way to bring up a custom dialog box on the customer's side and return promise.
 
 ````JavaScript
+angular.module('myApp', ['ngWYSIWYG']).
+controller('demoController', ['$scope', '$q', '$timeout', function($scope, $log, $q, $timeout) {
+	$scope.your_variable = 'some HTML text here';
 	$scope.api = {
 		scope: $scope,
 		insertImage: function() {
@@ -67,6 +70,7 @@ there is a way to bring up a custom dialog box on the customer's side and return
 			return deferred.promise;
 		}
 	};
+}]);
 ````
 Make sure you feed the api object to the directive like this:
 
