@@ -52,7 +52,7 @@ there is a way to bring up a custom dialog box on the customer's side and return
 
 ````JavaScript
 angular.module('myApp', ['ngWYSIWYG']).
-controller('demoController', ['$scope', '$q', '$timeout', function($scope, $log, $q, $timeout) {
+controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $timeout) {
 	$scope.your_variable = 'some HTML text here';
 	$scope.api = {
 		scope: $scope,
