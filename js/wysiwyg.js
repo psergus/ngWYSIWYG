@@ -62,8 +62,8 @@ var template = "<div class=\"tinyeditor\">" +
     "</div>" +
 "</div>";
 
-angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', 
-    function($compile, $timeout) {
+angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', '$sanitize',
+    function($compile, $timeout, $sanitize) {
 	//kudos http://stackoverflow.com/questions/13881834/bind-angular-cross-iframes-possible
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    var $document = $element[0].contentDocument;
@@ -85,7 +85,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    //model --> view
 	    ctrl.$render = function() {
 		//$body.html(ctrl.$viewValue || ''); //not friendly with jQuery. snap you jQuery
-		$body[0].innerHTML = ctrl.$viewValue || '';
+		$body[0].innerHTML = ctrl.$viewValue? $sanitize(ctrl.$viewValue) : '';
 	    }
 	    
 	    scope.sync = function() {
