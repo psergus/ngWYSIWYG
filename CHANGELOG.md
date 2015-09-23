@@ -4,6 +4,9 @@
 ## Bug fixes
 
 - used $sanitize to prevent XSS when render from the model to view. Gret read about it: https://www.blackhat.com/docs/eu-14/materials/eu-14-Javed-Revisiting-XSS-Sanitization-wp.pdf
+
+## Imprevements
+
 - added changelog
 
 
