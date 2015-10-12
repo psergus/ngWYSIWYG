@@ -44,6 +44,37 @@ Use it wherever you want:
 <wysiwyg-edit content="your_variable"></wysiwyg-edit>
 ```
 
+## Configuration
+
+You can configure the editor for two options (will extend l8r). First option is if you want to sanitize input from the user and prevent XSS attacks. This option uses angular's 
+$sanitize. The second option will allow to configure toolbar buttons. You will be able to configure which buttons you want to show. Please see example.
+
+````JavaScript
+angular.module('myApp', ['ngWYSIWYG']).
+controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $timeout) {
+	$scope.your_variable = 'some HTML text here';
+	$scope.api = {
+		scope: $scope,
+		$scope.editorConfig = {
+		    sanitize: false,
+		    toolbar: [
+			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
+			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
+			{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
+			{ name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
+			{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
+			{ name: 'tools', items: ['print', '-'] },
+			{ name: 'styling', items: ['font', 'size', 'format'] },
+		    ]
+		};
+	};
+}]);
+````
+
+```HTML
+<wysiwyg-edit content="your_variable" config="editorConfig"></wysiwyg-edit>
+```
+
 ## API
 
 There is an idea on the api functions to delegate some responsibilities to the customer's scope.
@@ -56,6 +87,18 @@ controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $
 	$scope.your_variable = 'some HTML text here';
 	$scope.api = {
 		scope: $scope,
+		$scope.editorConfig = {
+		    sanitize: false,
+		    toolbar: [
+			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
+			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
+			{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
+			{ name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
+			{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
+			{ name: 'tools', items: ['print', '-'] },
+			{ name: 'styling', items: ['font', 'size', 'format'] },
+		    ]
+		};
 		insertImage: function() {
 			var deferred = $q.defer();
 			$timeout(function() {
