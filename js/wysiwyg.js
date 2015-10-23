@@ -399,7 +399,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 	    };
 
 	    //show all panels by default
-	    scope.toolbar = scope.config.toolbar || [
+	    scope.toolbar = (scope.config && scope.config.toolbar)? scope.config.toolbar : [
 		{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
 		{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
 		{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
