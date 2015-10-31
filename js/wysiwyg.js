@@ -105,7 +105,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', '$sanit
 	    
 	    var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
 	    //view --> model
-	    $body.bind('blur click keyup change paste', function() {
+	    $body.bind('click keyup change paste', function() { //we removed 'blur' event
 		//lets debounce it
 		if(debounce) {
 		    $timeout.cancel(debounce);
@@ -183,7 +183,8 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', '$sanit
 	    
 	    //init
 	    try {
-		$document.execCommand("styleWithCSS", 0, 0);
+		$document.execCommand("styleWithCSS", 0, 0); // <-- want the Old Schoold elements like <b> or <i>, comment this line. kudos to: http://stackoverflow.com/questions/3088993/webkit-stylewithcss-contenteditable-not-working
+		$document.execCommand('enableObjectResizing', 0, true);
 		$document.execCommand('contentReadOnly', 0, 'false');
 	    }
 	    catch(e) { 
@@ -431,8 +432,41 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 	    * send the event to the iframe's controller to exec the command
 	    */
 	    scope.execCommand = function(cmd, arg) {
-		console.log('execCommand');
+		//console.log('execCommand');
 		//scope.$emit('execCommand', {command: cmd, arg: arg});
+		switch(cmd) {
+		    case 'bold':
+			scope.cursorStyle.bold = !scope.cursorStyle.bold;
+			break;
+		    case 'italic':
+			scope.cursorStyle.italic = !scope.cursorStyle.italic;
+			break;
+		    case 'underline':
+			scope.cursorStyle.underline = !scope.cursorStyle.underline;
+			break;
+		    case 'strikethrough':
+			scope.cursorStyle.strikethrough = !scope.cursorStyle.strikethrough;
+			break;
+		    case 'subscript':
+			scope.cursorStyle.sub = !scope.cursorStyle.sub;
+			break;
+		    case 'superscript':
+			scope.cursorStyle.super = !scope.cursorStyle.super;
+			break;
+		    case 'justifyleft':
+			scope.cursorStyle.alignment = 'left';
+			break;
+		    case 'justifycenter':
+			scope.cursorStyle.alignment = 'center';
+			break;
+		    case 'justifyright':
+			scope.cursorStyle.alignment = 'right';
+			break;
+		    case 'justifyfull':
+			scope.cursorStyle.alignment = 'justify';
+			break;
+		}
+		//console.log(scope.cursorStyle);
 		scope.$broadcast('execCommand', {command: cmd, arg: arg});
 	    }
 
