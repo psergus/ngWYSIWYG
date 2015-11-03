@@ -1,37 +1,64 @@
-body {margin:0; padding:25px; font:12px Verdana,Arial}
-#tinyeditor {border:none; margin:0; padding:0; font:14px 'Courier New',Verdana}
-.tinyeditor {border:1px solid #bbb; padding:0 1px 1px; font:12px Verdana,Arial}
-.tinyeditor iframe {border:none; background: white; overflow-x:hidden}
-.tinyeditor .sizer { min-height: 200px; height: 400px; position: relative; }
-.tinyeditor .resizer { background: url(../images/resize.gif) 15px 15px no-repeat; float: right; height: 32px; width: 32px; cursor: ns-resize; }
-.tinyeditor-header {height:31px; border-bottom:1px solid #bbb; background:url(../images/header-bg.gif) repeat-x; padding-top:1px}
-.tinyeditor-header select {float:left; margin-top:5px}
-.tinyeditor-font {margin-left:12px}
-.tinyeditor-size {margin:0 3px}
-.tinyeditor-style {margin-right:12px}
-.tinyeditor-divider {float:left; width:1px; height:30px; background:#ccc}
-.tinyeditor-control {
-    float:left; 
-    width:34px; 
-    height:30px; 
-    cursor:pointer; 
+wysiwyg-edit .tinyeditor {border:1px solid #bbb; padding:0 1px 1px; font:12px Verdana,Arial}
+wysiwyg-edit .tinyeditor iframe {border:none; background: white; overflow-x:hidden}
+wysiwyg-edit .tinyeditor .sizer { min-height: 200px; height: 400px; position: relative; }
+wysiwyg-edit .tinyeditor .resizer { background: url(../images/resize.gif) 15px 15px no-repeat; float: right; height: 32px; width: 32px; cursor: ns-resize; }
+wysiwyg-edit .tinyeditor .tinyeditor-header {height: auto; border-bottom:1px solid #bbb; background:url(../images/header-bg.gif) repeat; padding-top:1px}
+wysiwyg-edit .tinyeditor .tinyeditor-header select {float:left; /*margin-top:5px*/ }
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-font {/*margin-left:12px*/}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-size {margin:0 3px}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-style {margin-right:12px}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-divider {float:left; width:1px; height:30px; background:#ccc}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control {
+    float:left;
+    width:34px;
+    height:30px;
+    cursor:pointer;
     background-image:url(../images/icons.png);
     background-position-x: 0px;
 }
-.tinyeditor-control:hover {
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control:hover {
     background-color:#fff;
     background-position-x: 34px;
 }
-.tinyeditor-control.pressed {
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control.pressed {
     background-color:#D0CFCF;
 }
-.tinyeditor-footer {height:32px; border-top:1px solid #bbb; background:#f5f5f5}
-.toggle {float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666}
-.toggle:hover {background-color:#fff}
-.resize {float:right; height:32px; width:32px; background:url(../images/resize.gif) 15px 15px no-repeat; cursor:s-resize}
-.colors-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 192px; border: black solid 2px; padding: 0; margin: 0; z-index: 100;}
-.colors-grid > li { list-style: none; border: white solid 2px; float: left; width: 20px; height: 20px; }
-.colors-grid > li:hover { opacity: 0.7; }
-.symbols-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 384px; border: black solid 2px; padding: 0; margin: 0; z-index: 100;}
-.symbols-grid > li { list-style: none; border: rgb(231, 231, 231) solid 1px; float: left; width: 30px; height: 30px; text-align: center; font-size: 1.3em; }
-.symbols-grid > li:hover { opacity: 0.7; font-size: 1.7em; }
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group {
+    float: left;
+    height:31px;
+}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group:after {
+    clear: left;
+}
+wysiwyg-edit .tinyeditor .tinyeditor-footer {height:32px; border-top:1px solid #bbb; background:#f5f5f5; margin-top: 10px;}
+wysiwyg-edit .tinyeditor .tinyeditor-footer .toggle {float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666}
+wysiwyg-edit .tinyeditor .tinyeditor-footer .toggle:hover {background-color:#fff}
+wysiwyg-edit .tinyeditor .resize {float:right; height:32px; width:32px; background:url(../images/resize.gif) 15px 15px no-repeat; cursor:s-resize}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .colors-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 192px; border: black solid 2px; padding: 0; margin: 0; z-index: 100;}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .colors-grid > li { list-style: none; border: white solid 2px; float: left; width: 20px; height: 20px; }
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .colors-grid > li:hover { opacity: 0.7; }
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .symbols-grid { position: absolute; left: 0; top: 30px; background-color: white; width: 384px; border: black solid 2px; padding: 0; margin: 0; z-index: 100;}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .symbols-grid > li { list-style: none; border: rgb(231, 231, 231) solid 1px; float: left; width: 30px; height: 30px; text-align: center; font-size: 1.3em; }
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control .symbols-grid > li:hover { opacity: 0.7; font-size: 1.7em; }
+@media only screen and (max-width: 500px) {
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-font {
+	width: 80px;
+    }
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-size {
+	width: 80px;
+    }
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-style {
+	width: 80px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-font {
+	width: 80px;
+    }
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-size {
+	width: 80px;
+    }
+    wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-style {
+	width: 80px;
+    }
+}
