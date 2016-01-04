@@ -42,7 +42,14 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', '$sanit
 	    var $body = angular.element($element[0].contentDocument.body);
 	    var $head = angular.element($element[0].contentDocument.head);
 	    $body.attr('contenteditable', 'true');
-	    
+
+	    // fixing issue that makes caret disappear on chrome (https://github.com/psergus/ngWYSIWYG/issues/22)
+	    $document.addEventListener('click', function(event) {
+		if (event.target.tagName === 'HTML') {
+		    event.target.querySelector('body').focus();
+		}
+	    });
+
 	    /*
 	    $element.bind('load', function (event) {
 		console.log('iframe loaded');
