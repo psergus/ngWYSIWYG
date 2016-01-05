@@ -41,11 +41,7 @@
 				$body.attr('contenteditable', 'true');
 
 				if (attrs.editorStyle) {
-					var editorStylesheet = $document.createElement('link');
-					editorStylesheet.setAttribute('rel', 'stylesheet');
-					editorStylesheet.setAttribute('type', 'text/css');
-					editorStylesheet.setAttribute('href', attrs.editorStyle);
-					$head.appendChild(editorStylesheet);
+					$head.append('<link rel="stylesheet" type="text/css" href="' + attrs.editorStyle + '">');
 				}
 
 				// fixing issue that makes caret disappear on chrome (https://github.com/psergus/ngWYSIWYG/issues/22)
