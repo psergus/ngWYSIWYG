@@ -40,19 +40,20 @@
 				var $head = angular.element($element[0].contentDocument.head);
 				$body.attr('contenteditable', 'true');
 
+				if (attrs.editorStyle) {
+					var editorStylesheet = $document.createElement('link');
+					editorStylesheet.setAttribute('rel', 'stylesheet');
+					editorStylesheet.setAttribute('type', 'text/css');
+					editorStylesheet.setAttribute('href', attrs.editorStyle);
+					$head.appendChild(editorStylesheet);
+				}
+
 				// fixing issue that makes caret disappear on chrome (https://github.com/psergus/ngWYSIWYG/issues/22)
 				$document.addEventListener('click', function(event) {
 					if (event.target.tagName === 'HTML') {
 						event.target.querySelector('body').focus();
 					}
 				});
-
-				/*
-				 $element.bind('load', function (event) {
-				 console.log('iframe loaded');
-				 $document.designMode = 'On';
-				 });
-				 */
 
 				//model --> view
 				ctrl.$render = function() {
