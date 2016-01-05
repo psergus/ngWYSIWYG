@@ -23,26 +23,26 @@
 	<select class="tinyeditor-style" ng-model="textstyle" ng-options="s.key as s.name for s in styles"><option value="">Style</option></select>
 	<div class="tinyeditor-divider"></div>
 	<div class="tinyeditor-control" title="Font Color" style="background-position: 34px -779px; position: relative;" ng-click="showFontColors = !showFontColors">
-	    <colors-grid show="showFontColors" on-pick="setFontColor(color)"><colors-grid>
+		<colors-grid show="showFontColors" on-pick="setFontColor(color)"><colors-grid>
 	</div>
 	<div class="tinyeditor-control" title="Background Color" style="background-position: 34px -808px; position: relative;" ng-click="showBgColors = !showBgColors">
-	    <colors-grid show="showBgColors" on-pick="setBgColor(color)"><colors-grid>
+		<colors-grid show="showBgColors" on-pick="setBgColor(color)"><colors-grid>
 	</div>
 	<div class="tinyeditor-divider"></div>
 	<div class="tinyeditor-control" title="Insert Image" style="background-position: 34px -600px;" ng-click="insertImage()"></div>
 	<div class="tinyeditor-control" title="Insert Horizontal Rule" style="background-position: 34px -630px;" ng-click="execCommand('inserthorizontalrule')"></div>
 	<div class="tinyeditor-control" title="Insert Special Symbol" style="background-position: 34px -838px; position: relative;" ng-click="showSpecChars = !showSpecChars">
-	    <symbols-grid show="showSpecChars" on-pick="insertSpecChar(symbol)"><symbols-grid>
+		<symbols-grid show="showSpecChars" on-pick="insertSpecChar(symbol)"><symbols-grid>
 	</div>
 	<div class="tinyeditor-control" title="Insert Hyperlink" style="background-position: 34px -660px;" ng-click="insertLink()"></div>
 	<div class="tinyeditor-control" title="Remove Hyperlink" style="background-position: 34px -690px;" ng-click="execCommand('unlink')"></div>
 	<div class="tinyeditor-divider"></div><div class="tinyeditor-control" title="Print" style="background-position: 34px -750px;" ng-click="execCommand('print')"></div>
     </div>
     <div class="sizer" ce-resize>
-	<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 100%;" ng-show="editMode" ng-model="content"></textarea>
-	<iframe style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;" ng-hide="editMode" wframe="" ng-model="content"></iframe>
+		<textarea data-placeholder-attr="" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 100%;" ng-show="editMode" ng-model="content"></textarea>
+		<iframe style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;" ng-hide="editMode" wframe="" ng-model="content"></iframe>
     </div>
     <div class="tinyeditor-footer">
-	<div ng-switch="editMode" ng-click="editMode = !editMode" class="toggle"><span ng-switch-when="true">wysiwyg</span><span ng-switch-default>source</span></div>
+		<div ng-switch="editMode" ng-click="editMode = !editMode" class="toggle"><span ng-switch-when="true">wysiwyg</span><span ng-switch-default>source</span></div>
     </div>
 </div>
