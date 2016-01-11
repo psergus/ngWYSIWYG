@@ -9,7 +9,7 @@ var editorTemplate = "<div class=\"tinyeditor\">" +
     "</div>" +
     "<div class=\"sizer\" ce-resize>" +
 	"<textarea data-placeholder-attr=\"\" style=\"-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 100%;\" ng-show=\"editMode\" ng-model=\"content\"></textarea>" +
-	"<iframe style=\"-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;\" ng-hide=\"editMode\" wframe=\"{sanitize: config.sanitize}\" ng-model=\"content\"></iframe>" +
+	"<iframe style=\"-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;\" ng-hide=\"editMode\" wframe=\"{sanitize: config.sanitize}\" content-style=\"{contentStyle}\" ng-model=\"content\"></iframe>" +
     "</div>" +
     "<div class=\"tinyeditor-footer\">" +
 	"<div ng-switch=\"editMode\" ng-click=\"editMode = !editMode\" class=\"toggle\"><span ng-switch-when=\"true\">wysiwyg</span><span ng-switch-default>source</span></div>" + 
@@ -49,6 +49,11 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout', '$sanit
 	            event.target.querySelector('body').focus();
 	        }
 	    });
+
+	    // this option enables you to specify a custom CSS to be used within the editor (the editable area)
+	    if (attrs.contentStyle) {
+	        $head.append('<link rel="stylesheet" type="text/css" href="' + attrs.contentStyle + '">');
+	    }
 
 	    /*
 	    $element.bind('load', function (event) {
@@ -431,6 +436,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 	    }, toolbarGroups);
 	    
 	    var template = editorTemplate.replace('{toolbar}', toolbarGroups.join(''));
+	    template = template.replace('{contentStyle}', attrs.contentStyle || '');
 	    //$element.replaceWith( angular.element($compile( editorTemplate.replace('{toolbar}', toolbarGroups.join('') ) )(scope)) );
 	    $element.html( template );
 	    $compile($element.contents())(scope);
