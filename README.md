@@ -75,6 +75,31 @@ controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $
 <wysiwyg-edit content="your_variable" config="editorConfig"></wysiwyg-edit>
 ```
 
+## Custom content style
+
+This option enables you to specify a custom CSS file to be used within the editor (the editable area).
+
+````HTML
+<wysiwyg-edit content="your_variable" config="editorConfig" content-style="some_style.css"></wysiwyg-edit>
+```
+
+If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes ngWYSIWYG,
+NOT relative to ngWYSIWYG itself. In the example above, if the HTML file is hosted at http://www.example.com/wysiwyg.html, 
+then the css URL will be resolved to: http://www.example.com/some_style.css.
+
+### Use case
+
+This configuration is useful when you want your editor's content area to show the content exactly like its going to be
+show in the destination, without adding inline css to it. For example, let's say that the destination has a black background color
+with a white font-color. In this case your some_style.css file would have the following properties:
+
+```CSS
+html, body {
+    background-color: black;
+    color: #ffffff;
+}
+```
+
 ## API
 
 There is an idea on the api functions to delegate some responsibilities to the customer's scope.
