@@ -1,4 +1,7 @@
 var gulp = require('gulp');
+var git = require('gulp-git');
+var filter = require('gulp-filter');
+var tag_version = require('gulp-tag-version');
 var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
@@ -64,17 +67,29 @@ gulp.task('copy-images', function() {
 
 gulp.task('build', ['clean-css', 'uglify', 'copy-images']);
 
-gulp.task('dist', ['build'], function() {
-	var bumpType = process.argv[3];
-	if (!bumpType){
-		throw 'What bump type do you want? Major, minor or patch?'
-	}
-	// lower case and avoid -- at the begining
-	bumpType = bumpType.toLowerCase().substring(2, bumpType.length);
-	if (!_.contains(['major', 'minor', 'patch'], bumpType)) {
-		throw 'What bump type do you want? Major, minor or patch?'
-	}
-	gulp.src(['./bower.json', './component.json', './package.json'])
-		.pipe(bump({type: bumpType}))
-		.pipe(gulp.dest('./'));
+function inc(importance) {
+	// get all the files to bump version in
+	return gulp.src(['./package.json', './bower.json'])
+		// bump the version number in those files
+		.pipe(bump({type: importance}))
+		// save it back to filesystem
+		.pipe(gulp.dest('./'))
+		// commit the changed version number
+		.pipe(git.commit('bumps package version'))
+
+		// read only one file to get the version number
+		.pipe(filter('package.json'))
+		// **tag it in the repository**
+		.pipe(tag_version());
+}
+
+gulp.task('patch', function() { return inc('patch'); });
+gulp.task('feature', function() { return inc('minor'); });
+gulp.task('release', function() { return inc('major'); });
+
+gulp.task('push', function() {
+	var packageJson = require('./package.json');
+	git.push('origin', 'v' + packageJson.version, function (err) {
+		if (err) throw err;
+	});
 });
