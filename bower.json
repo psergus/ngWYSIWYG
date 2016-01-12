@@ -7,12 +7,11 @@
   ],
   "description": "Angular WYSIWYG directive",
   "main": [
-    "css/editor.css",
-    "js/wysiwyg.js",
-    "images/header-bg.gif",
-    "images/icons.png",
-    "images/resize.gif",
-    "tpl/wysiwyg.tpl"
+    "dist/editor.min.css",
+    "dist/wysiwyg.min.js",
+    "dist/images/header-bg.gif",
+    "dist/images/icons.png",
+    "dist/images/resize.gif"
   ],
   "keywords": [
     "angular",

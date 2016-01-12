@@ -1,0 +1,5 @@
+node_modules/*
+.idea/*
+dev/editor.css
+dev/wysiwyg.js
+dev/images/*
