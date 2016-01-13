@@ -425,7 +425,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 					html += 'title="' + button.title + '" ';
 				}
 				if (button.backgroundPos && !usingFontAwesome) {
-					html += 'style="background-position: ' + button.backgroundPos + ';" ';
+					html += 'style="background-position: ' + button.backgroundPos + '; position: relative;" ';
 				}
 				if (button.pressed) {
 					html += 'ng-class="{\'pressed\': cursorStyle.' + button.pressed + '}" ';
