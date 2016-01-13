@@ -6,13 +6,14 @@
 	<title>Angular WYSIWYG Demo</title>
 	<link rel="stylesheet" href="editor.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 <body ng-controller="demoController" ng-cloak>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12">
 			<h1>ngWYSIWYG - Angular real rich text editor.</h1>
-			<wysiwyg-edit content="content"></wysiwyg-edit>
+			<wysiwyg-edit content="content" config="editorConfig"></wysiwyg-edit>
 		</div>
 	</div>
 </div>
@@ -27,6 +28,12 @@
 			controller('demoController', ['$scope', '$log', function($scope, $log) {
 				$scope.content = '<p><strong>Hello World!</strong></p>' +
 						'<img src="images/logo.png">';
+				$scope.editorConfig = {
+					fontAwesome: true
+				};
+				$scope.api = {
+					scope: $scope
+				};
 				$scope.$watch('content', function(newValue) {
 					$log.info(newValue);
 				});

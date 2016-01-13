@@ -379,37 +379,81 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 	    scope.editMode = false;
 	    scope.cursorStyle = {}; //current cursor/caret position style
 
-	    scope.panelButtons = {
-		'-': "<div class=\"tinyeditor-divider\"></div>",
-		bold: "<div class=\"tinyeditor-control\" title=\"Bold\" style=\"background-position: 34px -120px;\" ng-class=\"{\'pressed\': cursorStyle.bold}\" ng-click=\"execCommand(\'bold\')\"></div>",
-		italic: "<div class=\"tinyeditor-control\" title=\"Italic\" style=\"background-position: 34px -150px;\" ng-class=\"{\'pressed\': cursorStyle.italic}\" ng-click=\"execCommand(\'italic\')\"></div>",
-		underline: "<div class=\"tinyeditor-control\" title=\"Underline\" style=\"background-position: 34px -180px;\" ng-class=\"{\'pressed\': cursorStyle.underline}\" ng-click=\"execCommand(\'underline\')\"></div>",
-		strikethrough: "<div class=\"tinyeditor-control\" title=\"Strikethrough\" style=\"background-position: 34px -210px;\" ng-class=\"{\'pressed\': cursorStyle.strikethrough}\" ng-click=\"execCommand(\'strikethrough\')\"></div>",
-		subscript: "<div class=\"tinyeditor-control\" title=\"Subscript\" style=\"background-position: 34px -240px;\" ng-class=\"{\'pressed\': cursorStyle.sub}\"ng-click=\"execCommand(\'subscript\')\"></div>",
-		superscript: "<div class=\"tinyeditor-control\" title=\"Superscript\" style=\"background-position: 34px -270px;\" ng-class=\"{\'pressed\': cursorStyle.super}\" ng-click=\"execCommand(\'superscript\')\"></div>",
-		leftAlign: "<div class=\"tinyeditor-control\" title=\"Left Align\" style=\"background-position: 34px -420px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'left'}\" ng-click=\"execCommand(\'justifyleft\')\"></div>",
-		centerAlign: "<div class=\"tinyeditor-control\" title=\"Center Align\" style=\"background-position: 34px -450px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'center'}\" ng-click=\"execCommand(\'justifycenter\')\"></div>",
-		rightAlign: "<div class=\"tinyeditor-control\" title=\"Right Align\" style=\"background-position: 34px -480px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'right'}\" ng-click=\"execCommand(\'justifyright\')\"></div>",
-		blockJustify: "<div class=\"tinyeditor-control\" title=\"Block Justify\" style=\"background-position: 34px -510px;\" ng-class=\"{\'pressed\': cursorStyle.alignment == 'justify'}\" ng-click=\"execCommand(\'justifyfull\')\"></div>",
-		orderedList: "<div class=\"tinyeditor-control\" title=\"Insert Ordered List\" style=\"background-position: 34px -300px;\" ng-click=\"execCommand(\'insertorderedlist\')\"></div>",
-		unorderedList: "<div class=\"tinyeditor-control\" title=\"Insert Unordered List\" style=\"background-position: 34px -330px;\" ng-click=\"execCommand(\'insertunorderedlist\')\"></div>",
-		outdent: "<div class=\"tinyeditor-divider\"></div><div class=\"tinyeditor-control\" title=\"Outdent\" style=\"background-position: 34px -360px;\" ng-click=\"execCommand(\'outdent\')\"></div>",
-		indent: "<div class=\"tinyeditor-control\" title=\"Indent\" style=\"background-position: 34px -390px;\" ng-click=\"execCommand(\'indent\')\"></div>",
-		removeFormatting: "<div class=\"tinyeditor-control\" title=\"Remove Formatting\" style=\"background-position: 34px -720px;\" ng-click=\"execCommand(\'removeformat\')\"></div>",
-		undo: "<div class=\"tinyeditor-control\" title=\"Undo\" style=\"background-position: 34px -540px;\" ng-click=\"execCommand(\'undo\')\"></div>",
-		redo: "<div class=\"tinyeditor-control\" title=\"Redo\" style=\"background-position: 34px -570px;\" ng-click=\"execCommand(\'redo\')\"></div>",
-		fontColor: "<div class=\"tinyeditor-control\" title=\"Font Color\" style=\"background-position: 34px -779px; position: relative;\" ng-click=\"showFontColors = !showFontColors\"><colors-grid show=\"showFontColors\" on-pick=\"setFontColor(color)\"><colors-grid></div>",
-		backgroundColor: "<div class=\"tinyeditor-control\" title=\"Background Color\" style=\"background-position: 34px -808px; position: relative;\" ng-click=\"showBgColors = !showBgColors\"><colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid></div>",
-		image: "<div class=\"tinyeditor-control\" title=\"Insert Image\" style=\"background-position: 34px -600px;\" ng-click=\"insertImage()\"></div>",
-		hr: "<div class=\"tinyeditor-control\" title=\"Insert Horizontal Rule\" style=\"background-position: 34px -630px;\" ng-click=\"execCommand(\'inserthorizontalrule\')\"></div>",
-		symbols: "<div class=\"tinyeditor-control\" title=\"Insert Special Symbol\" style=\"background-position: 34px -838px; position: relative;\" ng-click=\"showSpecChars = !showSpecChars\"><symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid></div>",
-		link: "<div class=\"tinyeditor-control\" title=\"Insert Hyperlink\" style=\"background-position: 34px -660px;\" ng-click=\"insertLink()\"></div>",
-		unlink: "<div class=\"tinyeditor-control\" title=\"Remove Hyperlink\" style=\"background-position: 34px -690px;\" ng-click=\"execCommand(\'unlink\')\"></div>",
-		print: "<div class=\"tinyeditor-control\" title=\"Print\" style=\"background-position: 34px -750px;\" ng-click=\"execCommand(\'print\')\"></div>",
-		font: "<select class=\"tinyeditor-font\" ng-model=\"font\" ng-options=\"a as a for a in fonts\" ng-change=\"fontChange()\"><option value=\"\">Font</option></select>",
-		size: "<select class=\"tinyeditor-size\" ng-model=\"fontsize\" ng-options=\"a.key as a.name for a in fontsizes\" ng-change=\"sizeChange()\"><option value=\"\">Size</option></select>",
-		format: "<select class=\"tinyeditor-style\" ng-model=\"textstyle\" ng-options=\"s.key as s.name for s in styles\" ng-change=\"styleChange()\"><option value=\"\">Style</option></select>",
-	    };
+		scope.panelButtons = {
+			'-': { type: 'div', class: 'tinyeditor-divider' },
+			bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'old' },
+			italic:{type: 'div', title: 'Italic', class: 'tinyeditor-control', faIcon: 'italic', backgroundPos: '34px -150px', pressed: 'italic', command: 'italic' },
+			underline:{ type: 'div', title: 'Underline', class: 'tinyeditor-control', faIcon: 'underline', backgroundPos: '34px -180px', pressed: 'underline', command: 'underline' },
+			strikethrough:{ type: 'div', title: 'Strikethrough', class: 'tinyeditor-control', faIcon: 'strikethrough', backgroundPos: '34px -210px', pressed: 'strikethrough', command: 'strikethrough' },
+			subscript:{ type: 'div', title: 'Subscript', class: 'tinyeditor-control', faIcon: 'subscript', backgroundPos: '34px -240px', pressed: 'sub', command: 'subscript' },
+			superscript:{ type: 'div', title: 'Superscript', class: 'tinyeditor-control', faIcon: 'superscript', backgroundPos: '34px -270px', pressed: 'super', command: 'superscript' },
+			leftAlign:{ type: 'div', title: 'Left Align', class: 'tinyeditor-control', faIcon: 'align-left', backgroundPos: '34px -420px', pressed: 'alignmet == \'left\'', command: 'justifyleft' },
+			centerAlign:{ type: 'div', title: 'Center Align', class: 'tinyeditor-control', faIcon: 'align-center', backgroundPos: '34px -450px', pressed: 'alignment == \'center\'', command: 'justifycenter' },
+			rightAlign:{ type: 'div', title: 'Right Align', class: 'tinyeditor-control', faIcon: 'align-right', backgroundPos: '34px -480px', pressed: 'alignment == \'right\'', command: 'justifyright' },
+			blockJustify:{ type: 'div', title: 'Block Justify', class: 'tinyeditor-control', faIcon: 'align-justify', backgroundPos: '34px -510px', pressed: 'alignment == \'justify\'', command: 'justifyfull' },
+			orderedList:{ type: 'div', title: 'Insert Ordered List', class: 'tinyeditor-control', faIcon: 'list-ol', backgroundPos: '34px -300px', command: 'insertorderedlist' },
+			unorderedList:{ type: 'div', title: 'Insert Unordered List', class: 'tinyeditor-control', faIcon: 'list-ul', backgroundPos: '34px -330px', command: 'insertunorderedlist' },
+			outdent:{ type: 'div', title: 'Outdent', class: 'tinyeditor-control', faIcon: 'outdent', backgroundPos: '34px -360px', command: 'outdent' },
+			indent:{ type: 'div', title: 'Indent', class: 'tinyeditor-control', faIcon: 'indent', backgroundPos: '34px -390px', command: 'indent' },
+			removeFormatting:{ type: 'div', title: 'Remove Formatting', class: 'tinyeditor-control', faIcon: 'eraser', backgroundPos: '34px -720px', command: 'removeformat' },
+			undo:{ type: 'div', title: 'Undo', class: 'tinyeditor-control', faIcon: 'undo', backgroundPos: '34px -540px', command: 'undo' },
+			redo:{ type: 'div', title: 'Redo', class: 'tinyeditor-control', faIcon: 'repeat', backgroundPos: '34px -570px', command: 'redo' },
+			fontColor:{ type: 'div', title: 'Font Color', class: 'tinyeditor-control', faIcon: 'font', backgroundPos: '34px -779px', specialCommand: 'showFontColors = !showFontColors', inner: '<colors-grid show=\"showFontColors\" on-pick=\"setFontColor(color)\"><colors-grid>' },
+			backgroundColor:{ type: 'div', title: 'Background Color', class: 'tinyeditor-control', faIcon: 'paint-brush', backgroundPos:'34px -808px', specialCommand: 'showBgColors = !showBgColors', inner: '<colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid>' },
+			image:{ type: 'div', title: 'Insert Image', class: 'tinyeditor-control', faIcon: 'picture-o', backgroundPos: '34px -600px', specialCommand: 'insertImage()' },
+			hr:{ type: 'div', title: 'Insert Horizontal Rule', class: 'tinyeditor-control', faIcon: '-', backgroundPos: '34px -630px', command: 'inserthorizontalrule' },
+			symbols:{ type: 'div', title: 'Insert Special Symbol', class: 'tinyeditor-control', faIcon: 'cny', backgroundPos: '34px -838px', specialCommand: 'showSpecChars = !showSpecChars', inner: '<symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid>' },
+			link:{ type: 'div', title: 'Insert Hyperlink', class: 'tinyeditor-control', faIcon: 'link', backgroundPos: '34px -660px', specialCommand: 'insertLink()' },
+			unlink:{ type: 'div', title: 'Remove Hyperlink', class: 'tinyeditor-control', faIcon: 'chain-broken', backgroundPos: '34px -690px', command: 'unlink' },
+			print:{ type: 'div', title: 'Print', class: 'tinyeditor-control', faIcon: 'print', backgroundPos: '34px -750px', command: 'print' },
+			font:{ type: 'select', title: 'Font', class: 'tinyeditor-font', model: 'font', options: 'a as a for a in fonts', change: 'fontChange()' },
+			size:{ type: 'select', title: 'Size', class: 'tinyeditor-size', model: 'fontsize', options: 'a.key as a.name for a in fontsizes', change: 'sizeChange()' },
+			format:{ type: 'select', title: 'Style', class: 'tinyeditor-size', model: 'textstyle', options: 's.key as s.name for s in styles', change: 'styleChange()' }
+		};
+
+		var usingFontAwesome = scope.config && scope.config.fontAwesome;
+
+		function getButtonHtml(button) {
+			var html = '<' + button.type;
+			html += ' class="' + button.class;
+			if (usingFontAwesome) {
+				html += ' tinyeditor-control-fa';
+			}
+			html += '" ';
+			if (button.type == 'div') {
+				if (button.title) {
+					html += 'title="' + button.title + '" ';
+				}
+				if (button.backgroundPos && !usingFontAwesome) {
+					html += 'style="background-position: ' + button.backgroundPos + '; position: relative;" ';
+				}
+				if (button.pressed) {
+					html += 'ng-class="{\'pressed\': cursorStyle.' + button.pressed + '}" ';
+				}
+				if (button.command) {
+					html += 'ng-click="execCommand(\'' + button.command + '\')" ';
+				} else if (button.specialCommand) {
+					html += 'ng-click="' + button.specialCommand + '" ';
+				}
+				html += '>'; // this closes <div>
+				if (button.faIcon && usingFontAwesome && button.faIcon != '-') {
+					html += '<i class="fa fa-' + button.faIcon + '"></i>';
+				}
+				if (button.faIcon && usingFontAwesome && button.faIcon == '-') {
+					html += '<div class="hr"></div>';
+				}
+				if (button.inner) {
+					html+= button.inner;
+				}
+			} else if (button.type == 'select') {
+				html += 'ng-model="' + button.model + '" ';
+				html += 'ng-options="' + button.options + '" ';
+				html += 'ng-change="' + button.change + '" ';
+				html += '<option value="">' + button.title + '</option>';
+			}
+			html += '</' + button.type + '>';
+			return html;
+		}
 
 	    //show all panels by default
 	    scope.toolbar = (scope.config && scope.config.toolbar)? scope.config.toolbar : [
@@ -426,7 +470,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 	    angular.forEach(scope.toolbar, function(buttonGroup, index) {
 		var buttons = [];
 		angular.forEach(buttonGroup.items, function(button, index) {
-		    this.push( scope.panelButtons[button] );
+		    this.push( getButtonHtml(scope.panelButtons[button]) );
 		}, buttons);
 		this.push(
 		    "<div class=\"tinyeditor-buttons-group\">" +
