@@ -399,7 +399,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 			undo:{ type: 'div', title: 'Undo', class: 'tinyeditor-control', backgroundPos: '34px -540px', command: 'undo' },
 			redo:{ type: 'div', title: 'Redo', class: 'tinyeditor-control', backgroundPos: '34px -570px', command: 'redo' },
 			fontColor:{ type: 'div', title: 'Font Color', class: 'tinyeditor-control', backgroundPos: '34px -779px', specialCommand: 'showFontColors = !showFontColors', inner: '<colors-grid show=\"showFontColors\" on-pick=\"setFontColor(color)\"><colors-grid>' },
-			backgroundColor:{ type: 'div', title: 'Background Color', class: 'tinyeditor-control', backgroundPos:'34px -808px', specialCommand: 'showBgColors = !showBgColors', inner: '<colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid></div>' },
+			backgroundColor:{ type: 'div', title: 'Background Color', class: 'tinyeditor-control', backgroundPos:'34px -808px', specialCommand: 'showBgColors = !showBgColors', inner: '<colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid>' },
 			image:{ type: 'div', title: 'Insert Image', class: 'tinyeditor-control', backgroundPos: '34px -600px', specialCommand: 'insertImage()' },
 			hr:{ type: 'div', title: 'Insert Horizontal Rule', class: 'tinyeditor-control', backgroundPos: '34px -630px', command: 'inserthorizontalrule' },
 			symbols:{ type: 'div', title: 'Insert Special Symbol', class: 'tinyeditor-control', backgroundPos: '34px -838px', specialCommand: 'showSpecChars = !showSpecChars', inner: '<symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid>' },
@@ -440,6 +440,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 				html += '<option value="">' + button.title + '</option>';
 			}
 			html += '</' + button.type + '>';
+			console.log(html);
 			return html;
 		}
 
