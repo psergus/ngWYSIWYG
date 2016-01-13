@@ -3,7 +3,7 @@ wysiwyg-edit .tinyeditor iframe {border:none; background: white; overflow-x:hidd
 wysiwyg-edit .tinyeditor .sizer { min-height: 200px; height: 400px; position: relative; }
 wysiwyg-edit .tinyeditor .resizer { background: url(../images/resize.gif) 15px 15px no-repeat; float: right; height: 32px; width: 32px; cursor: ns-resize; }
 wysiwyg-edit .tinyeditor .tinyeditor-header {height: auto; border-bottom:1px solid #bbb; background:url(../images/header-bg.gif) repeat; padding-top:1px}
-wysiwyg-edit .tinyeditor .tinyeditor-header select {float:left; /*margin-top:5px*/ }
+wysiwyg-edit .tinyeditor .tinyeditor-header select {float:left; width: 220px; border: 1px solid #cccccc; background-color: #ffffff; height: 30px; line-height: 30px;/*margin-top:5px*/ }
 wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-font {/*margin-left:12px*/}
 wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-size {margin:0 3px}
 wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-style {margin-right:12px}
@@ -26,6 +26,19 @@ wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyedito
 wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group {
     float: left;
     height:31px;
+}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control-fa {
+    background-image: none;
+    position: relative;
+}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control-fa i {
+    font-size: 16px;
+    margin: 8px 5px 0 10px;
+    color: #555;
+}
+wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group .tinyeditor-control-fa div.hr {
+    border: 1px solid #555;
+    margin: 15px 10px;
 }
 wysiwyg-edit .tinyeditor .tinyeditor-header .tinyeditor-buttons-group:after {
     clear: left;
