@@ -381,44 +381,50 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 
 		scope.panelButtons = {
 			'-': { type: 'div', class: 'tinyeditor-divider' },
-			bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', backgroundPos: '34px -120px', pressed: 'bold', command: 'old' },
-			italic:{type: 'div', title: 'Italic', class: 'tinyeditor-control', backgroundPos: '34px -150px', pressed: 'italic', command: 'italic' },
-			underline:{ type: 'div', title: 'Underline', class: 'tinyeditor-control', backgroundPos: '34px -180px', pressed: 'underline', command: 'underline' },
-			strikethrough:{ type: 'div', title: 'Strikethrough', class: 'tinyeditor-control', backgroundPos: '34px -210px', pressed: 'strikethrough', command: 'strikethrough' },
-			subscript:{ type: 'div', title: 'Subscript', class: 'tinyeditor-control', backgroundPos: '34px -240px', pressed: 'sub', command: 'subscript' },
-			superscript:{ type: 'div', title: 'Superscript', class: 'tinyeditor-control', backgroundPos: '34px -270px', pressed: 'super', command: 'superscript' },
-			leftAlign:{ type: 'div', title: 'Left Align', class: 'tinyeditor-control', backgroundPos: '34px -420px', pressed: 'alignmet == \'left\'', command: 'justifyleft' },
-			centerAlign:{ type: 'div', title: 'Center Align', class: 'tinyeditor-control', backgroundPos: '34px -450px', pressed: 'alignment == \'center\'', command: 'justifycenter' },
-			rightAlign:{ type: 'div', title: 'Right Align', class: 'tinyeditor-control', backgroundPos: '34px -480px', pressed: 'alignment == \'right\'', command: 'justifyright' },
-			blockJustify:{ type: 'div', title: 'Block Justify', class: 'tinyeditor-control', backgroundPos: '34px -510px', pressed: 'alignment == \'justify\'', command: 'justifyfull' },
-			orderedList:{ type: 'div', title: 'Insert Ordered List', class: 'tinyeditor-control', backgroundPos: '34px -300px', command: 'insertorderedlist' },
-			unorderedList:{ type: 'div', title: 'Insert Unordered List', class: 'tinyeditor-control', backgroundPos: '34px -330px', command: 'insertunorderedlist' },
-			outdent:{ type: 'div', title: 'Outdent', class: 'tinyeditor-control', backgroundPos: '34px -360px', command: 'outdent' },
-			indent:{ type: 'div', title: 'Indent', class: 'tinyeditor-control', backgroundPos: '34px -390px', command: 'indent' },
-			removeFormatting:{ type: 'div', title: 'Remove Formatting', class: 'tinyeditor-control', backgroundPos: '34px -720px', command: 'removeformat' },
-			undo:{ type: 'div', title: 'Undo', class: 'tinyeditor-control', backgroundPos: '34px -540px', command: 'undo' },
-			redo:{ type: 'div', title: 'Redo', class: 'tinyeditor-control', backgroundPos: '34px -570px', command: 'redo' },
-			fontColor:{ type: 'div', title: 'Font Color', class: 'tinyeditor-control', backgroundPos: '34px -779px', specialCommand: 'showFontColors = !showFontColors', inner: '<colors-grid show=\"showFontColors\" on-pick=\"setFontColor(color)\"><colors-grid>' },
-			backgroundColor:{ type: 'div', title: 'Background Color', class: 'tinyeditor-control', backgroundPos:'34px -808px', specialCommand: 'showBgColors = !showBgColors', inner: '<colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid>' },
-			image:{ type: 'div', title: 'Insert Image', class: 'tinyeditor-control', backgroundPos: '34px -600px', specialCommand: 'insertImage()' },
-			hr:{ type: 'div', title: 'Insert Horizontal Rule', class: 'tinyeditor-control', backgroundPos: '34px -630px', command: 'inserthorizontalrule' },
-			symbols:{ type: 'div', title: 'Insert Special Symbol', class: 'tinyeditor-control', backgroundPos: '34px -838px', specialCommand: 'showSpecChars = !showSpecChars', inner: '<symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid>' },
-			link:{ type: 'div', title: 'Insert Hyperlink', class: 'tinyeditor-control', backgroundPos: '34px -660px', specialCommand: 'insertLink()' },
-			unlink:{ type: 'div', title: 'Remove Hyperlink', class: 'tinyeditor-control', backgroundPos: '34px -690px', command: 'unlink' },
-			print:{ type: 'div', title: 'Print', class: 'tinyeditor-control', backgroundPos: '34px -750px', command: 'print' },
+			bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'old' },
+			italic:{type: 'div', title: 'Italic', class: 'tinyeditor-control', faIcon: 'italic', backgroundPos: '34px -150px', pressed: 'italic', command: 'italic' },
+			underline:{ type: 'div', title: 'Underline', class: 'tinyeditor-control', faIcon: 'underline', backgroundPos: '34px -180px', pressed: 'underline', command: 'underline' },
+			strikethrough:{ type: 'div', title: 'Strikethrough', class: 'tinyeditor-control', faIcon: 'strikethrough', backgroundPos: '34px -210px', pressed: 'strikethrough', command: 'strikethrough' },
+			subscript:{ type: 'div', title: 'Subscript', class: 'tinyeditor-control', faIcon: 'subscript', backgroundPos: '34px -240px', pressed: 'sub', command: 'subscript' },
+			superscript:{ type: 'div', title: 'Superscript', class: 'tinyeditor-control', faIcon: 'superscript', backgroundPos: '34px -270px', pressed: 'super', command: 'superscript' },
+			leftAlign:{ type: 'div', title: 'Left Align', class: 'tinyeditor-control', faIcon: 'align-left', backgroundPos: '34px -420px', pressed: 'alignmet == \'left\'', command: 'justifyleft' },
+			centerAlign:{ type: 'div', title: 'Center Align', class: 'tinyeditor-control', faIcon: 'align-center', backgroundPos: '34px -450px', pressed: 'alignment == \'center\'', command: 'justifycenter' },
+			rightAlign:{ type: 'div', title: 'Right Align', class: 'tinyeditor-control', faIcon: 'align-right', backgroundPos: '34px -480px', pressed: 'alignment == \'right\'', command: 'justifyright' },
+			blockJustify:{ type: 'div', title: 'Block Justify', class: 'tinyeditor-control', faIcon: 'align-justify', backgroundPos: '34px -510px', pressed: 'alignment == \'justify\'', command: 'justifyfull' },
+			orderedList:{ type: 'div', title: 'Insert Ordered List', class: 'tinyeditor-control', faIcon: 'list-ol', backgroundPos: '34px -300px', command: 'insertorderedlist' },
+			unorderedList:{ type: 'div', title: 'Insert Unordered List', class: 'tinyeditor-control', faIcon: 'list-ul', backgroundPos: '34px -330px', command: 'insertunorderedlist' },
+			outdent:{ type: 'div', title: 'Outdent', class: 'tinyeditor-control', faIcon: 'outdent', backgroundPos: '34px -360px', command: 'outdent' },
+			indent:{ type: 'div', title: 'Indent', class: 'tinyeditor-control', faIcon: 'indent', backgroundPos: '34px -390px', command: 'indent' },
+			removeFormatting:{ type: 'div', title: 'Remove Formatting', class: 'tinyeditor-control', faIcon: 'eraser', backgroundPos: '34px -720px', command: 'removeformat' },
+			undo:{ type: 'div', title: 'Undo', class: 'tinyeditor-control', faIcon: 'undo', backgroundPos: '34px -540px', command: 'undo' },
+			redo:{ type: 'div', title: 'Redo', class: 'tinyeditor-control', faIcon: 'repeat', backgroundPos: '34px -570px', command: 'redo' },
+			fontColor:{ type: 'div', title: 'Font Color', class: 'tinyeditor-control', faIcon: 'font', backgroundPos: '34px -779px', specialCommand: 'showFontColors = !showFontColors', inner: '<colors-grid show=\"showFontColors\" on-pick=\"setFontColor(color)\"><colors-grid>' },
+			backgroundColor:{ type: 'div', title: 'Background Color', class: 'tinyeditor-control', faIcon: 'paint-brush', backgroundPos:'34px -808px', specialCommand: 'showBgColors = !showBgColors', inner: '<colors-grid show=\"showBgColors\" on-pick=\"setBgColor(color)\"><colors-grid>' },
+			image:{ type: 'div', title: 'Insert Image', class: 'tinyeditor-control', faIcon: 'picture-o', backgroundPos: '34px -600px', specialCommand: 'insertImage()' },
+			hr:{ type: 'div', title: 'Insert Horizontal Rule', class: 'tinyeditor-control', faIcon: '-', backgroundPos: '34px -630px', command: 'inserthorizontalrule' },
+			symbols:{ type: 'div', title: 'Insert Special Symbol', class: 'tinyeditor-control', faIcon: 'cny', backgroundPos: '34px -838px', specialCommand: 'showSpecChars = !showSpecChars', inner: '<symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid>' },
+			link:{ type: 'div', title: 'Insert Hyperlink', class: 'tinyeditor-control', faIcon: 'link', backgroundPos: '34px -660px', specialCommand: 'insertLink()' },
+			unlink:{ type: 'div', title: 'Remove Hyperlink', class: 'tinyeditor-control', faIcon: 'chain-broken', backgroundPos: '34px -690px', command: 'unlink' },
+			print:{ type: 'div', title: 'Print', class: 'tinyeditor-control', faIcon: 'print', backgroundPos: '34px -750px', command: 'print' },
 			font:{ type: 'select', title: 'Font', class: 'tinyeditor-font', model: 'font', options: 'a as a for a in fonts', change: 'fontChange()' },
 			size:{ type: 'select', title: 'Size', class: 'tinyeditor-size', model: 'fontsize', options: 'a.key as a.name for a in fontsizes', change: 'sizeChange()' },
 			format:{ type: 'select', title: 'Style', class: 'tinyeditor-size', model: 'textstyle', options: 's.key as s.name for s in styles', change: 'styleChange()' }
 		};
 
+		var usingFontAwesome = scope.config && scope.config.fontAwesome;
+
 		function getButtonHtml(button) {
-			var html = '<' + button.type
-				+ ' class="' + button.class + '" ';
+			var html = '<' + button.type;
+			html += ' class="' + button.class;
+			if (usingFontAwesome) {
+				html += ' tinyeditor-control-fa';
+			}
+			html += '" ';
 			if (button.type == 'div') {
 				if (button.title) {
 					html += 'title="' + button.title + '" ';
 				}
-				if (button.backgroundPos) {
+				if (button.backgroundPos && !usingFontAwesome) {
 					html += 'style="background-position: ' + button.backgroundPos + ';" ';
 				}
 				if (button.pressed) {
@@ -430,6 +436,12 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 					html += 'ng-click="' + button.specialCommand + '" ';
 				}
 				html += '>'; // this closes <div>
+				if (button.faIcon && usingFontAwesome && button.faIcon != '-') {
+					html += '<i class="fa fa-' + button.faIcon + '"></i>';
+				}
+				if (button.faIcon && usingFontAwesome && button.faIcon == '-') {
+					html += '<div class="hr"></div>';
+				}
 				if (button.inner) {
 					html+= button.inner;
 				}
@@ -440,7 +452,6 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 				html += '<option value="">' + button.title + '</option>';
 			}
 			html += '</' + button.type + '>';
-			console.log(html);
 			return html;
 		}
 
