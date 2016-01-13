@@ -590,8 +590,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 		config: '='
 	    },
 	    restrict: 'AE',
-	    replace: true,
-	    //template: tpl
+	    replace: true
 	}
     }
 ]);
