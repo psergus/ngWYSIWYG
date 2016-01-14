@@ -381,7 +381,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout', '$
 
 		scope.panelButtons = {
 			'-': { type: 'div', class: 'tinyeditor-divider' },
-			bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'old' },
+			bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'bold' },
 			italic:{type: 'div', title: 'Italic', class: 'tinyeditor-control', faIcon: 'italic', backgroundPos: '34px -150px', pressed: 'italic', command: 'italic' },
 			underline:{ type: 'div', title: 'Underline', class: 'tinyeditor-control', faIcon: 'underline', backgroundPos: '34px -180px', pressed: 'underline', command: 'underline' },
 			strikethrough:{ type: 'div', title: 'Strikethrough', class: 'tinyeditor-control', faIcon: 'strikethrough', backgroundPos: '34px -210px', pressed: 'strikethrough', command: 'strikethrough' },
