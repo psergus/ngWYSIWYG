@@ -592,12 +592,12 @@
 				scope.insertLink = function() {
 					var elementBeingEdited = getSelectionBoundaryElement(getContentWindow(), true);
 					var defaultUrl = 'http://';
-					if (elementBeingEdited.nodeName == 'A') {
+					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
 						defaultUrl = elementBeingEdited.href;
 					}
 					var val;
 					if(scope.api && scope.api.insertLink && angular.isFunction(scope.api.insertLink)) {
-						val = scope.api.insertLink.apply( scope.api.scope || null, defaultUrl );
+						val = scope.api.insertLink.apply( scope.api.scope || null, [defaultUrl]);
 					} else {
 						val = prompt('Please enter the URL', 'http://');
 					}
