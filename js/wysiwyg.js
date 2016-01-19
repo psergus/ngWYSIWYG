@@ -384,14 +384,9 @@
 
 				function loadVars() {
 					if (iframe != null) return;
-					console.log(document);
 					iframe = document.querySelector('wysiwyg-edit').querySelector('iframe');
-					console.log(iframe);
 					iframeDocument = iframe.contentDocument;
-					console.log(iframeDocument);
-					iframeWindow = iframe.defaultView;
-					console.log(iframeWindow);
-					debugger;
+					iframeWindow = iframeDocument.defaultView;
 				}
 
 				scope.panelButtons = {
