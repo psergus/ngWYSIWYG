@@ -378,15 +378,15 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
-				var contentWindow = null;
-				function getContentWindow() {
-					if (contentWindow) {
-						return contentWindow;
+				var iframeDocument = null;
+				function getIframeDocument() {
+					if (iframeDocument) {
+						return iframeDocument;
 					}
 					var component = document.querySelector('wysiwyg-edit');
 					var iframe = component.querySelector('iframe');
-					contentWindow = (iframe.contentWindow || iframe.contentDocument);
-					return contentWindow;
+					iframeDocument = iframe.contentDocument;
+					return iframeDocument;
 				}
 
 				scope.panelButtons = {
@@ -590,10 +590,19 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
-					var elementBeingEdited = getSelectionBoundaryElement(getContentWindow(), true);
+					var elementBeingEdited = getSelectionBoundaryElement(getIframeDocument(), true);
 					var defaultUrl = 'http://';
 					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
 						defaultUrl = elementBeingEdited.href;
+
+						// now we select the whole a tag since it makes no sense to add a link inside another link
+						var iframeDocument = getIframeDocument();
+						var selectRange = iframeDocument.createRange();
+						selectRange.setStart(elementBeingEdited.firstChild, 0);
+						selectRange.setEnd(elementBeingEdited.firstChild, elementBeingEdited.firstChild.length);
+						var selection = iframeDocument.defaultView.getSelection();
+						selection.removeAllRanges();
+						selection.addRange(selectRange);
 					}
 					var val;
 					if(scope.api && scope.api.insertLink && angular.isFunction(scope.api.insertLink)) {
