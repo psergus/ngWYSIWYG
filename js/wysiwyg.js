@@ -1,6 +1,44 @@
 'use strict';
 (function(angular) {
 
+	var getSelectionBoundaryElement = function(win, isStart) {
+		var range, sel, container = null;
+		var doc = win.document;
+		if (doc.selection) {
+			// IE branch
+			range = doc.selection.createRange();
+			range.collapse(isStart);
+			return range.parentElement();
+		}
+		else if (doc.getSelection) {
+			//firefox
+			sel = doc.getSelection();
+			if (sel.rangeCount > 0) {
+				range = sel.getRangeAt(0);
+				//console.log(range);
+				container = range[isStart ? "startContainer" : "endContainer"];
+				if (container.nodeType === 3) {
+					container = container.parentNode;
+				}
+				//console.log(container);
+			}
+		}
+		else if (win.getSelection) {
+			// Other browsers
+			sel = win.getSelection();
+			if (sel.rangeCount > 0) {
+				range = sel.getRangeAt(0);
+				container = range[isStart ? "startContainer" : "endContainer"];
+
+				// Check if the container is a text node and return its parent if so
+				if (container.nodeType === 3) {
+					container = container.parentNode;
+				}
+			}
+		}
+		return container;
+	};
+
 	angular.module('ngWYSIWYG', ['ngSanitize']);
 	var editorTemplate = "<div class=\"tinyeditor\">" +
 		"<div class=\"tinyeditor-header\" ng-hide=\"editMode\">" +
@@ -74,45 +112,6 @@
 					scope.$evalAsync(function(scope) {
 						ctrl.$setViewValue($body.html());
 					});
-				};
-
-
-				var getSelectionBoundaryElement = function(win, isStart) {
-					var range, sel, container = null;
-					var doc = win.document;
-					if (doc.selection) {
-						// IE branch
-						range = doc.selection.createRange();
-						range.collapse(isStart);
-						return range.parentElement();
-					}
-					else if (doc.getSelection) {
-						//firefox
-						sel = doc.getSelection();
-						if (sel.rangeCount > 0) {
-							range = sel.getRangeAt(0);
-							//console.log(range);
-							container = range[isStart ? "startContainer" : "endContainer"];
-							if (container.nodeType === 3) {
-								container = container.parentNode;
-							}
-							//console.log(container);
-						}
-					}
-					else if (win.getSelection) {
-						// Other browsers
-						sel = win.getSelection();
-						if (sel.rangeCount > 0) {
-							range = sel.getRangeAt(0);
-							container = range[isStart ? "startContainer" : "endContainer"];
-
-							// Check if the container is a text node and return its parent if so
-							if (container.nodeType === 3) {
-								container = container.parentNode;
-							}
-						}
-					}
-					return container;
 				};
 
 				var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
@@ -580,9 +579,14 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
+					var elementBeingEdited = getSelectionBoundaryElement($element[0].contentWindow, true);
+					var defaultUrl = 'http://';
+					if (elementBeingEdited.nodeName == 'A') {
+						defaultUrl = elementBeingEdited.href;
+					}
 					var val;
 					if(scope.api && scope.api.insertLink && angular.isFunction(scope.api.insertLink)) {
-						val = scope.api.insertLink.apply( scope.api.scope || null );
+						val = scope.api.insertLink.apply( scope.api.scope || null, defaultUrl );
 					} else {
 						val = prompt('Please enter the URL', 'http://');
 					}
