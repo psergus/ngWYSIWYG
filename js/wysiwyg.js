@@ -378,6 +378,17 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
+				var contentWindow = null;
+				function getContentWindow() {
+					if (contentWindow) {
+						return contentWindow;
+					}
+					var component = document.getSelector('wysiwyg-edit');
+					var iframe = component.getSelector('iframe');
+					contentWindow = (iframe.contentWindow || iframe.contentDocument);
+					return contentWindow;
+				}
+
 				scope.panelButtons = {
 					'-': { type: 'div', class: 'tinyeditor-divider' },
 					bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'bold' },
@@ -579,7 +590,7 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
-					var elementBeingEdited = getSelectionBoundaryElement($element[0].contentWindow, true);
+					var elementBeingEdited = getSelectionBoundaryElement(getContentWindow(), true);
 					var defaultUrl = 'http://';
 					if (elementBeingEdited.nodeName == 'A') {
 						defaultUrl = elementBeingEdited.href;
