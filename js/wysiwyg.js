@@ -580,8 +580,16 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
-					var val = prompt('Please enter the URL', 'http://');
-					if(val) scope.execCommand('createlink', val);
+					var val;
+					if(scope.api && scope.api.insertLink && angular.isFunction(scope.api.insertLink)) {
+						val = scope.api.insertLink.apply( scope.api.scope || null );
+					} else {
+						val = prompt('Please enter the URL', 'http://');
+					}
+					//resolve the promise if any
+					$q.when(val).then(function() {
+						scope.execCommand('createlink', val);
+					});
 				};
 				/*
 				 * insert
