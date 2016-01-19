@@ -378,9 +378,16 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
-				var iframe = document.querySelector('wysiwyg-edit').querySelector('iframe');
-				var iframeDocument = iframe.contentDocument;
-				var iframeWindow = iframe.defaultView;
+				var iframe = null;
+				var iframeDocument = null;
+				var iframeWindow = null;
+
+				function loadVars() {
+					if (iframe != null) return;
+					iframe = document.querySelector('wysiwyg-edit').querySelector('iframe');
+					iframeDocument = iframe.contentDocument;
+					iframeWindow = iframe.defaultView;
+				}
 
 				scope.panelButtons = {
 					'-': { type: 'div', class: 'tinyeditor-divider' },
@@ -583,6 +590,7 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
+					loadVars();
 					var elementBeingEdited = getSelectionBoundaryElement(iframeWindow, true);
 					var defaultUrl = 'http://';
 					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
