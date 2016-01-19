@@ -378,16 +378,9 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
-				var iframeDocument = null;
-				function getIframeDocument() {
-					if (iframeDocument) {
-						return iframeDocument;
-					}
-					var component = document.querySelector('wysiwyg-edit');
-					var iframe = component.querySelector('iframe');
-					iframeDocument = iframe.contentDocument;
-					return iframeDocument;
-				}
+				var iframe = document.querySelector('wysiwyg-edit').querySelector('iframe');
+				var iframeDocument = iframe.contentDocument;
+				var iframeWindow = iframe.defaultView;
 
 				scope.panelButtons = {
 					'-': { type: 'div', class: 'tinyeditor-divider' },
@@ -590,13 +583,12 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
-					var elementBeingEdited = getSelectionBoundaryElement(getIframeDocument(), true);
+					var elementBeingEdited = getSelectionBoundaryElement(iframeWindow, true);
 					var defaultUrl = 'http://';
 					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
 						defaultUrl = elementBeingEdited.href;
 
 						// now we select the whole a tag since it makes no sense to add a link inside another link
-						var iframeDocument = getIframeDocument();
 						var selectRange = iframeDocument.createRange();
 						selectRange.setStart(elementBeingEdited.firstChild, 0);
 						selectRange.setEnd(elementBeingEdited.firstChild, elementBeingEdited.firstChild.length);
