@@ -587,8 +587,8 @@
 						val = prompt('Please enter the URL', 'http://');
 					}
 					//resolve the promise if any
-					$q.when(val).then(function() {
-						scope.execCommand('createlink', val);
+					$q.when(val).then(function(data) {
+						scope.execCommand('createlink', data);
 					});
 				};
 				/*
