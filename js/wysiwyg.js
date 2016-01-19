@@ -383,8 +383,8 @@
 					if (contentWindow) {
 						return contentWindow;
 					}
-					var component = document.getSelector('wysiwyg-edit');
-					var iframe = component.getSelector('iframe');
+					var component = document.querySelector('wysiwyg-edit');
+					var iframe = component.querySelector('iframe');
 					contentWindow = (iframe.contentWindow || iframe.contentDocument);
 					return contentWindow;
 				}
