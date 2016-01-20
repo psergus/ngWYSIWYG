@@ -480,7 +480,12 @@
 				angular.forEach(scope.toolbar, function(buttonGroup, index) {
 					var buttons = [];
 					angular.forEach(buttonGroup.items, function(button, index) {
-						this.push( getButtonHtml(scope.panelButtons[button]) );
+						var newButton = scope.panelButtons[button];
+						if (!newButton) {
+							// checks if it is a button defined by the user
+							newButton = scope.config.buttons[button];
+						}
+						this.push( getButtonHtml(newButton) );
 					}, buttons);
 					this.push(
 						"<div class=\"tinyeditor-buttons-group\">" +
