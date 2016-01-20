@@ -1,7 +1,6 @@
 {
-<<<<<<< HEAD
   "name": "ngWYSIWYG",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "homepage": "https://github.com/psergus/ngWYSIWYG",
   "authors": [
     "Sergey Petrenko <sergey@inkfrog.com>"
@@ -43,49 +42,4 @@
     "angular": "~1.2.0",
     "angular-sanitize": "~1.2.0"
   }
-=======
-	"name": "ngWYSIWYG",
-	"version": "0.3.4",
-	"homepage": "https://github.com/psergus/ngWYSIWYG",
-	"authors": [
-		"Sergey Petrenko <sergey@inkfrog.com>"
-	],
-	"description": "Angular WYSIWYG directive",
-	"main": [
-		"dist/editor.min.css",
-		"dist/wysiwyg.min.js",
-		"dist/images/header-bg.gif",
-		"dist/images/icons.png",
-		"dist/images/resize.gif"
-	],
-	"keywords": [
-		"angular",
-		"wysiwyg",
-		"texteditor",
-		"angular",
-		"iframe",
-		"angular",
-		"directive",
-		"angualr",
-		"rich",
-		"text",
-		"angular",
-		"wysiwyg",
-		"angular",
-		"angular",
-		"editor"
-	],
-	"license": "MIT",
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
-	],
-	"dependencies": {
-		"angular": "~1.2.0",
-		"angular-sanitize": "~1.2.0"
-	}
->>>>>>> 2a2bb5ba46cf89a70fdf05ea0bfc4355859e6a14
 }
