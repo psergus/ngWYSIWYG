@@ -1,6 +1,44 @@
 'use strict';
 (function(angular) {
 
+	var getSelectionBoundaryElement = function(win, isStart) {
+		var range, sel, container = null;
+		var doc = win.document;
+		if (doc.selection) {
+			// IE branch
+			range = doc.selection.createRange();
+			range.collapse(isStart);
+			return range.parentElement();
+		}
+		else if (doc.getSelection) {
+			//firefox
+			sel = doc.getSelection();
+			if (sel.rangeCount > 0) {
+				range = sel.getRangeAt(0);
+				//console.log(range);
+				container = range[isStart ? "startContainer" : "endContainer"];
+				if (container.nodeType === 3) {
+					container = container.parentNode;
+				}
+				//console.log(container);
+			}
+		}
+		else if (win.getSelection) {
+			// Other browsers
+			sel = win.getSelection();
+			if (sel.rangeCount > 0) {
+				range = sel.getRangeAt(0);
+				container = range[isStart ? "startContainer" : "endContainer"];
+
+				// Check if the container is a text node and return its parent if so
+				if (container.nodeType === 3) {
+					container = container.parentNode;
+				}
+			}
+		}
+		return container;
+	};
+
 	angular.module('ngWYSIWYG', ['ngSanitize']);
 	var editorTemplate = "<div class=\"tinyeditor\">" +
 		"<div class=\"tinyeditor-header\" ng-hide=\"editMode\">" +
@@ -74,45 +112,6 @@
 					scope.$evalAsync(function(scope) {
 						ctrl.$setViewValue($body.html());
 					});
-				};
-
-
-				var getSelectionBoundaryElement = function(win, isStart) {
-					var range, sel, container = null;
-					var doc = win.document;
-					if (doc.selection) {
-						// IE branch
-						range = doc.selection.createRange();
-						range.collapse(isStart);
-						return range.parentElement();
-					}
-					else if (doc.getSelection) {
-						//firefox
-						sel = doc.getSelection();
-						if (sel.rangeCount > 0) {
-							range = sel.getRangeAt(0);
-							//console.log(range);
-							container = range[isStart ? "startContainer" : "endContainer"];
-							if (container.nodeType === 3) {
-								container = container.parentNode;
-							}
-							//console.log(container);
-						}
-					}
-					else if (win.getSelection) {
-						// Other browsers
-						sel = win.getSelection();
-						if (sel.rangeCount > 0) {
-							range = sel.getRangeAt(0);
-							container = range[isStart ? "startContainer" : "endContainer"];
-
-							// Check if the container is a text node and return its parent if so
-							if (container.nodeType === 3) {
-								container = container.parentNode;
-							}
-						}
-					}
-					return container;
 				};
 
 				var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
@@ -379,6 +378,17 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
+				var iframe = null;
+				var iframeDocument = null;
+				var iframeWindow = null;
+
+				function loadVars() {
+					if (iframe != null) return;
+					iframe = document.querySelector('wysiwyg-edit').querySelector('iframe');
+					iframeDocument = iframe.contentDocument;
+					iframeWindow = iframeDocument.defaultView;
+				}
+
 				scope.panelButtons = {
 					'-': { type: 'div', class: 'tinyeditor-divider' },
 					bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'bold' },
@@ -431,7 +441,11 @@
 							html += 'ng-class="{\'pressed\': cursorStyle.' + button.pressed + '}" ';
 						}
 						if (button.command) {
-							html += 'ng-click="execCommand(\'' + button.command + '\')" ';
+							var executable = '\'' + button.command + '\'';
+							if (button.commandParameter) {
+								executable += ', \'' + button.commandParameter + '\'';
+							}
+							html += 'ng-click="execCommand(' + executable + ')" ';
 						} else if (button.specialCommand) {
 							html += 'ng-click="' + button.specialCommand + '" ';
 						}
@@ -470,7 +484,12 @@
 				angular.forEach(scope.toolbar, function(buttonGroup, index) {
 					var buttons = [];
 					angular.forEach(buttonGroup.items, function(button, index) {
-						this.push( getButtonHtml(scope.panelButtons[button]) );
+						var newButton = scope.panelButtons[button];
+						if (!newButton) {
+							// checks if it is a button defined by the user
+							newButton = scope.config.buttons[button];
+						}
+						this.push( getButtonHtml(newButton) );
 					}, buttons);
 					this.push(
 						"<div class=\"tinyeditor-buttons-group\">" +
@@ -580,8 +599,31 @@
 					scope.execCommand('insertHTML', symbol);
 				};
 				scope.insertLink = function() {
-					var val = prompt('Please enter the URL', 'http://');
-					if(val) scope.execCommand('createlink', val);
+					loadVars();
+					if (iframeWindow.getSelection().focusNode == null) return; // user should at least click the editor
+					var elementBeingEdited = getSelectionBoundaryElement(iframeWindow, true);
+					var defaultUrl = 'http://';
+					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
+						defaultUrl = elementBeingEdited.href;
+
+						// now we select the whole a tag since it makes no sense to add a link inside another link
+						var selectRange = iframeDocument.createRange();
+						selectRange.setStart(elementBeingEdited.firstChild, 0);
+						selectRange.setEnd(elementBeingEdited.firstChild, elementBeingEdited.firstChild.length);
+						var selection = iframeWindow.getSelection();
+						selection.removeAllRanges();
+						selection.addRange(selectRange);
+					}
+					var val;
+					if(scope.api && scope.api.insertLink && angular.isFunction(scope.api.insertLink)) {
+						val = scope.api.insertLink.apply( scope.api.scope || null, [defaultUrl]);
+					} else {
+						val = prompt('Please enter the URL', 'http://');
+					}
+					//resolve the promise if any
+					$q.when(val).then(function(data) {
+						scope.execCommand('createlink', data);
+					});
 				};
 				/*
 				 * insert
