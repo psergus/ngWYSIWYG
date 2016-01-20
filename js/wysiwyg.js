@@ -441,7 +441,11 @@
 							html += 'ng-class="{\'pressed\': cursorStyle.' + button.pressed + '}" ';
 						}
 						if (button.command) {
-							html += 'ng-click="execCommand(\'' + button.command + '\')" ';
+							var executable = button.command;
+							if (button.commandParameter) {
+								executable += ', ' + button.commandParameter
+							}
+							html += 'ng-click="execCommand(\'' + executable + '\')" ';
 						} else if (button.specialCommand) {
 							html += 'ng-click="' + button.specialCommand + '" ';
 						}
