@@ -591,6 +591,7 @@
 				};
 				scope.insertLink = function() {
 					loadVars();
+					if (iframeWindow.getSelection().focusNode == null) return; // user should at least click the editor
 					var elementBeingEdited = getSelectionBoundaryElement(iframeWindow, true);
 					var defaultUrl = 'http://';
 					if (elementBeingEdited && elementBeingEdited.nodeName == 'A') {
@@ -600,7 +601,7 @@
 						var selectRange = iframeDocument.createRange();
 						selectRange.setStart(elementBeingEdited.firstChild, 0);
 						selectRange.setEnd(elementBeingEdited.firstChild, elementBeingEdited.firstChild.length);
-						var selection = iframeDocument.defaultView.getSelection();
+						var selection = iframeWindow.getSelection();
 						selection.removeAllRanges();
 						selection.addRange(selectRange);
 					}
