@@ -30,7 +30,7 @@
     "url": "https://github.com/psergus/ngWYSIWYG/issues"
   },
   "homepage": "https://github.com/psergus/ngWYSIWYG#readme",
-  "dependencies": {
+  "devDependencies": {
     "gulp-bump": "^1.0.0",
     "gulp-clean": "^0.3.1",
     "gulp-filter": "^3.0.1",
