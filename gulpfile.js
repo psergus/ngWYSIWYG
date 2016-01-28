@@ -20,7 +20,7 @@ gulp.task('set-development-mode', function() {
 
 gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images'], function () {
 	gulp.watch(['./js/wysiwyg.js', './css/**/*.sass', './images/**/*'], ['minify', 'uglify', 'copy-images']);
-	gulp.src('./dev').pipe(webserver());
+	gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
 });
 
 function getDestination() {

@@ -389,6 +389,42 @@
 					iframeWindow = iframeDocument.defaultView;
 				}
 
+				function pasteHtmlAtCaret(html) {
+					loadVars();
+					var sel, range;
+					if (iframeWindow.getSelection) {
+						sel = iframeWindow.getSelection();
+						if (sel.getRangeAt && sel.rangeCount) {
+							range = sel.getRangeAt(0);
+							range.deleteContents();
+
+							// Range.createContextualFragment() would be useful here but is
+							// only relatively recently standardized and is not supported in
+							// some browsers (IE9, for one)
+							var el = iframeDocument.createElement("div");
+							el.innerHTML = html;
+							var frag = iframeDocument.createDocumentFragment(), node, lastNode;
+							while ((node = el.firstChild)) {
+								lastNode = frag.appendChild(node);
+							}
+							var firstNode = frag.firstChild;
+							range.insertNode(frag);
+
+							// Preserve the selection
+							if (lastNode) {
+								range = range.cloneRange();
+								range.setStartAfter(lastNode);
+								range.collapse(true);
+								sel.removeAllRanges();
+								sel.addRange(range);
+							}
+						}
+					} else if (iframeDocument.selection && iframeDocument.selection.type != "Control") {
+						// IE < 9
+						iframeDocument.selection.createRange().pasteHTML(html);
+					}
+				}
+
 				scope.panelButtons = {
 					'-': { type: 'div', class: 'tinyeditor-divider' },
 					bold: { type: 'div', title: 'Bold', class: 'tinyeditor-control', faIcon: 'bold', backgroundPos: '34px -120px', pressed: 'bold', command: 'bold' },
@@ -596,7 +632,7 @@
 
 				scope.showSpecChars = false;
 				scope.insertSpecChar = function(symbol) {
-					scope.execCommand('insertHTML', symbol);
+					pasteHtmlAtCaret(symbol);
 				};
 				scope.insertLink = function() {
 					loadVars();
@@ -638,9 +674,8 @@
 						val = '<img src="' + val + '">'; //we convert into HTML element.
 					}
 					//resolve the promise if any
-					$q.when(val).then( function(data) {
-						//scope.execCommand('insertimage', val);
-						scope.execCommand('insertHTML', data); //we insert image as an HTML element instead of giving the editor a direct command to insert an image with url
+					$q.when(val).then(function(data) {
+						pasteHtmlAtCaret(data);
 					});
 				};
 				$element.ready(function() {
