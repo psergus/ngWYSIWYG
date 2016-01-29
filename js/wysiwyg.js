@@ -187,6 +187,42 @@
 					scope.sync();
 				});
 
+				scope.$on('insertElement', function(event, html) {
+					var sel, range;
+					if ($document.defaultView.getSelection) {
+						sel = $document.defaultView.getSelection();
+						if (sel.getRangeAt && sel.rangeCount) {
+							range = sel.getRangeAt(0);
+							range.deleteContents();
+
+							// Range.createContextualFragment() would be useful here but is
+							// only relatively recently standardized and is not supported in
+							// some browsers (IE9, for one)
+							var el = $document.createElement("div");
+							el.innerHTML = html;
+							var frag = $document.createDocumentFragment(), node, lastNode;
+							while ((node = el.firstChild)) {
+								lastNode = frag.appendChild(node);
+							}
+							var firstNode = frag.firstChild;
+							range.insertNode(frag);
+
+							// Preserve the selection
+							if (lastNode) {
+								range = range.cloneRange();
+								range.setStartAfter(lastNode);
+								range.collapse(true);
+								sel.removeAllRanges();
+								sel.addRange(range);
+							}
+						}
+					} else if ($document.selection && $document.selection.type != "Control") {
+						// IE < 9
+						$document.selection.createRange().pasteHTML(html);
+					}
+					scope.sync();
+				});
+
 				scope.$on('$destroy', function() {
 					//clean after myself
 
@@ -389,40 +425,8 @@
 					iframeWindow = iframeDocument.defaultView;
 				}
 
-				function pasteHtmlAtCaret(html) {
-					loadVars();
-					var sel, range;
-					if (iframeWindow.getSelection) {
-						sel = iframeWindow.getSelection();
-						if (sel.getRangeAt && sel.rangeCount) {
-							range = sel.getRangeAt(0);
-							range.deleteContents();
-
-							// Range.createContextualFragment() would be useful here but is
-							// only relatively recently standardized and is not supported in
-							// some browsers (IE9, for one)
-							var el = iframeDocument.createElement("div");
-							el.innerHTML = html;
-							var frag = iframeDocument.createDocumentFragment(), node, lastNode;
-							while ((node = el.firstChild)) {
-								lastNode = frag.appendChild(node);
-							}
-							var firstNode = frag.firstChild;
-							range.insertNode(frag);
-
-							// Preserve the selection
-							if (lastNode) {
-								range = range.cloneRange();
-								range.setStartAfter(lastNode);
-								range.collapse(true);
-								sel.removeAllRanges();
-								sel.addRange(range);
-							}
-						}
-					} else if (iframeDocument.selection && iframeDocument.selection.type != "Control") {
-						// IE < 9
-						iframeDocument.selection.createRange().pasteHTML(html);
-					}
+				function insertElement(html) {
+					scope.$broadcast('insertElement', html);
 				}
 
 				scope.panelButtons = {
@@ -632,7 +636,7 @@
 
 				scope.showSpecChars = false;
 				scope.insertSpecChar = function(symbol) {
-					pasteHtmlAtCaret(symbol);
+					insertElement(symbol);
 				};
 				scope.insertLink = function() {
 					loadVars();
@@ -675,7 +679,7 @@
 					}
 					//resolve the promise if any
 					$q.when(val).then(function(data) {
-						pasteHtmlAtCaret(data);
+						insertElement(data);
 					});
 				};
 				$element.ready(function() {
