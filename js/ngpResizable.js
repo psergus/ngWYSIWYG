@@ -13,13 +13,13 @@
 				doc.addEventListener('mousemove', resize);
 				doc.addEventListener('mouseup', stopResizing);
 
+				var iframes = doc.querySelectorAll('iframe');
+				for (var i = 0; i < iframes.length; i++) {
+					iframes[i].contentWindow.document.addEventListener('mouseup', stopResizing);
+				}
+
 				function resize(event) {
 					event.preventDefault();
-
-					if (event.buttons < 1) {
-						// no buttons being hold, so stop now
-						return stopResizing();
-					}
 
 					// Function to manage resize down event
 					var margin = 50;
@@ -42,6 +42,11 @@
 				function stopResizing() {
 					doc.removeEventListener('mousemove', resize);
 					doc.removeEventListener('mouseup', stopResizing);
+
+					var iframes = doc.querySelectorAll('iframe');
+					for (var i = 0; i < iframes.length; i++) {
+						iframes[i].contentWindow.document.removeEventListener('mouseup', stopResizing);
+					}
 				}
 			});
 		};
