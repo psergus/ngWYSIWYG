@@ -12,10 +12,15 @@
 			resizeButton.addEventListener('mousedown', function() {
 				doc.addEventListener('mousemove', resize);
 				doc.addEventListener('mouseup', stopResizing);
-				doc.defaultView.addEventListener('blur', stopResizing);
 
 				function resize(event) {
 					event.preventDefault();
+
+					if (event.buttons < 1) {
+						// no buttons being hold, so stop now
+						return stopResizing();
+					}
+
 					// Function to manage resize down event
 					var margin = 50;
 					var uppest = element.offsetTop + margin;
@@ -37,7 +42,6 @@
 				function stopResizing() {
 					doc.removeEventListener('mousemove', resize);
 					doc.removeEventListener('mouseup', stopResizing);
-					doc.defaultView.removeEventListener('blur', stopResizing);
 				}
 			});
 		};
