@@ -611,7 +611,7 @@
 				 */
 				scope.styles = [{name: 'Paragraph', key: '<p>'}, {name: 'Header 1', key: '<h1>'}, {name: 'Header 2', key: '<h2>'}, {name: 'Header 3', key: '<h3>'}, {name: 'Header 4', key: '<h4>'}, {name: 'Header 5', key: '<h5>'}, {name: 'Header 6', key: '<h6>'}];
 				scope.styleChange = function() {
-					scope.execCommand( 'formatblock', scope.fontsize );
+					scope.execCommand( 'formatblock', scope.textstyle );
 				};
 				/*
 				 scope.$watch('textstyle', function(newValue) {
