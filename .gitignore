@@ -3,3 +3,4 @@ node_modules/*
 dev/editor.css
 dev/wysiwyg.js
 dev/images/*
+build/*

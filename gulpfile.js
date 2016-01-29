@@ -6,6 +6,7 @@ var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var clean = require('gulp-clean');
+var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var webserver = require('gulp-webserver');
 var bump = require('gulp-bump');
@@ -19,7 +20,7 @@ gulp.task('set-development-mode', function() {
 });
 
 gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images'], function () {
-	gulp.watch(['./js/wysiwyg.js', './css/**/*.sass', './images/**/*'], ['minify', 'uglify', 'copy-images']);
+	gulp.watch(['./js/**/*.js', './css/**/*.sass', './images/**/*'], ['minify', 'uglify', 'copy-images']);
 	gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
 });
 
@@ -53,9 +54,15 @@ gulp.task('clean-css', ['minify'], function () {
 		.pipe(clean());
 });
 
-gulp.task('uglify', function() {
-	return gulp.src('./js/wysiwyg.js')
-		.pipe(gulpif(development == false, uglify({ mangle:false })))
+gulp.task('concat-js', function() {
+	return gulp.src(['./js/wysiwyg.js', './js/**/!(wysiwyg)*.js'])
+		.pipe(concat('wysiwyg.js'))
+		.pipe(gulp.dest('./build'));
+});
+
+gulp.task('uglify', ['concat-js'], function() {
+	return gulp.src('./build/wysiwyg.js')
+		.pipe(gulpif(development == false, uglify({ mangle: true })))
 		.pipe(gulpif(development == false, rename(renameMin)))
 		.pipe(gulp.dest(getDestination()));
 });

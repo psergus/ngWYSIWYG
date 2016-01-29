@@ -45,7 +45,7 @@
 		"{toolbar}" + // <-- we gonna replace it with the configured toolbar
 		"<div style=\"clear: both;\"></div>" +
 		"</div>" +
-		"<div class=\"sizer\" ce-resize>" +
+		"<div class=\"sizer\" ngp-resizable>" +
 		"<textarea data-placeholder-attr=\"\" style=\"-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; resize: none; width: 100%; height: 100%;\" ng-show=\"editMode\" ng-model=\"content\"></textarea>" +
 		"<iframe style=\"-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; height: 100%;\" ng-hide=\"editMode\" wframe=\"{sanitize: config.sanitize}\" content-style=\"{contentStyle}\" ng-model=\"content\"></iframe>" +
 		"</div>" +
@@ -253,68 +253,7 @@
 			}
 		}
 	]);
-// kudos to http://codereview.stackexchange.com/questions/61847/draggable-resizeable-box
-	angular.module("ngWYSIWYG").directive("ceResize", ['$document', function($document) {
-		return function($scope, $element, $attr) {
-			//Reference to the original
-			var $mouseDown;
 
-			// Function to manage resize up event
-			var resizeUp = function($event) {
-				var margin = 50,
-					lowest = $mouseDown.top + $mouseDown.height - margin,
-					top = $event.pageY > lowest ? lowest : $event.pageY,
-					height = $mouseDown.top - top + $mouseDown.height;
-
-				$element.css({
-					top: top + "px",
-					height: height + "px"
-				});
-			};
-			// Function to manage resize down event
-			var resizeDown = function($event) {
-				var margin = 50,
-					uppest = $element[0].offsetTop + margin,
-					height = $event.pageY > uppest ? $event.pageY - $element[0].offsetTop : margin;
-
-				$element.css({
-					height: height + "px"
-				});
-			};
-
-
-			var createResizer = function createResizer( className , handlers ) {
-				var newElement = angular.element( '<span class="' + className + '"></span>' );
-				$element.append(newElement);
-				newElement.on("mousedown", function($event) {
-
-					$document.on("mousemove", mousemove);
-					$document.on("mouseup", mouseup);
-
-					//Keep the original event around for up / left resizing
-					$mouseDown = $event;
-					$mouseDown.top = $element[0].offsetTop;
-					$mouseDown.left = $element[0].offsetLeft
-					$mouseDown.width = $element[0].offsetWidth;
-					$mouseDown.height = $element[0].offsetHeight;
-
-					function mousemove($event) {
-						$event.preventDefault();
-						for( var i = 0 ; i < handlers.length ; i++){
-							handlers[i]( $event );
-						}
-					}
-
-					function mouseup() {
-						$document.off("mousemove", mousemove);
-						$document.off("mouseup", mouseup);
-					}
-				});
-			};
-
-			createResizer( 'resizer' , [ resizeDown ,  resizeDown ] );
-		};
-	}]);
 	angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 		function($compile, $document) {
 			var linker = function( scope, element, attrs, ctrl ) {
