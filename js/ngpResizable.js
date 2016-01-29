@@ -3,19 +3,25 @@
 	angular.module('ngWYSIWYG').directive('ngpResizable', ['$document', function($document) {
 		return function($scope, $element) {
 			var doc = $document[0];
+			var element = $element[0];
 
 			var resizeDown = function($event) {
 				// Function to manage resize down event
 				var margin = 50;
-				var uppest = $element[0].offsetTop + margin;
+				var uppest = element.offsetTop + margin;
 				var height = margin;
 				if ($event.pageY > uppest) {
-					height = $event.pageY - ($element[0].getBoundingClientRect().top + $event.view.pageYOffset);
+					height = $event.pageY - (element.getBoundingClientRect().top + $event.view.pageYOffset);
 				}
 
-				$element.css({
-					height: height + 'px'
-				});
+				var currentHeight = element.style.height.replace('px', '');
+				if (currentHeight && currentHeight < height &&
+					window.innerHeight - $event.clientY <= 45) {
+					// scrolling to improve resize usability
+					$event.view.scrollBy(0, height - currentHeight);
+				}
+
+				element.style.height = height + 'px';
 			};
 
 			var newElement = angular.element('<span class="resizer"></span>');
