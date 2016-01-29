@@ -9,7 +9,7 @@ Here is the <a href="http://psergus.github.io/ngWYSIWYG/">Demo</a>
 ### Why iFrame?
 
 A real rich text editor must reflect the true stage of the editing content. Any CSS and/or Javascript on the host page must not overide the specifics of the content.
-Moreover, iframe allows to issolate your security issues (any possible Javascript code in the content may polute your window's scope).
+Moreover, iframe allows to isolate your security issues (any possible Javascript code in the content may polute your window's scope).
 
 
 Installation
