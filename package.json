@@ -1,8 +1,9 @@
 {
   "name": "ng-wysiwyg",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "true angular WYSIWYG",
   "devDependencies": {
+    "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-clean": "^0.3.1",
     "gulp-filter": "^3.0.1",
