@@ -31,6 +31,11 @@
 		}
 	]);
 
+	angular.module('ngWYSIWYG').constant('NGP_EVENTS', {
+		ELEMENT_CLICKED: 'ngp-element-clicked',
+		CLICK_AWAY: 'ngp-click-away'
+	});
+
 	angular.module('ngWYSIWYG').directive('colorsGrid', ['$compile', '$document',
 		function($compile, $document) {
 			var linker = function( scope, element, attrs, ctrl ) {
@@ -124,11 +129,15 @@
 		}
 	]);
 
-	angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', '$compile', '$timeout', '$q',
-		function(ngpUtils, $compile, $timeout, $q) {
+	angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', 'NGP_EVENTS', '$rootScope', '$compile', '$timeout', '$q',
+		function(ngpUtils, NGP_EVENTS, $rootScope, $compile, $timeout, $q) {
 			var linker = function( scope, $element, attrs, ctrl ) {
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
+
+				document.addEventListener('click', function() {
+					$rootScope.$broadcast(NGP_EVENTS.CLICK_AWAY);
+				});
 
 				var iframe = null;
 				var iframeDocument = null;

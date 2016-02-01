@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
 
-	angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpUtils', '$compile', '$timeout', '$sanitize',
-		function(ngpUtils, $compile, $timeout, $sanitize) {
+	angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ngpUtils', 'NGP_EVENTS', '$compile',
+		'$timeout', '$sanitize', function(ngpImageResizer, ngpUtils, NGP_EVENTS, $compile, $timeout, $sanitize) {
 
 			//kudos http://stackoverflow.com/questions/13881834/bind-angular-cross-iframes-possible
 			var linker = function( scope, $element, attrs, ctrl ) {
@@ -11,6 +11,7 @@
 				$document.write('<!DOCTYPE html><html><head></head><body contenteditable="true"></body></html>');
 				$document.close();
 				$document.designMode = 'On';
+				ngpImageResizer.setup(scope, $document);
 				var $body = angular.element($element[0].contentDocument.body);
 				var $head = angular.element($element[0].contentDocument.head);
 				$body.attr('contenteditable', 'true');
@@ -20,6 +21,7 @@
 					if (event.target.tagName === 'HTML') {
 						event.target.querySelector('body').focus();
 					}
+					scope.$emit(NGP_EVENTS.ELEMENT_CLICKED, event.target);
 				});
 
 				// this option enables you to specify a custom CSS to be used within the editor (the editable area)
@@ -47,7 +49,13 @@
 						$timeout.cancel(debounce);
 					}
 					debounce = $timeout(function blurkeyup() {
-						ctrl.$setViewValue($body.html());
+						var contentDocument = $body[0].ownerDocument;
+						var imageResizer = contentDocument.querySelector('.ngp-image-resizer');
+						var html = $body[0].innerHTML;
+						if (imageResizer) {
+							html = html.replace(imageResizer.outerHTML, '');
+						}
+						ctrl.$setViewValue(html);
 						//check the caret position
 						//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
 						var el = ngpUtils.getSelectionBoundaryElement($element[0].contentWindow, true);
