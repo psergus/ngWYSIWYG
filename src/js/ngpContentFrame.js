@@ -164,7 +164,7 @@
 				//init
 				try {
 					$document.execCommand("styleWithCSS", 0, 0); // <-- want the Old Schoold elements like <b> or <i>, comment this line. kudos to: http://stackoverflow.com/questions/3088993/webkit-stylewithcss-contenteditable-not-working
-					$document.execCommand('enableObjectResizing', 0, true);
+					$document.execCommand('enableObjectResizing', false, 'false');
 					$document.execCommand('contentReadOnly', 0, 'false');
 				}
 				catch(e) {
