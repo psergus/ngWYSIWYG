@@ -1,7 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('ngWYSIWYG').directive('ngpContentFrame', ['$compile', '$timeout', '$sanitize',
-		function($compile, $timeout, $sanitize) {
+
+	angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpUtils', '$compile', '$timeout', '$sanitize',
+		function(ngpUtils, $compile, $timeout, $sanitize) {
 
 			//kudos http://stackoverflow.com/questions/13881834/bind-angular-cross-iframes-possible
 			var linker = function( scope, $element, attrs, ctrl ) {
@@ -49,7 +50,7 @@
 						ctrl.$setViewValue($body.html());
 						//check the caret position
 						//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
-						var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+						var el = ngpUtils.getSelectionBoundaryElement($element[0].contentWindow, true);
 						if(el) {
 							var computedStyle = $element[0].contentWindow.getComputedStyle(el);
 							var elementStyle = {
