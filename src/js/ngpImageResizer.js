@@ -37,7 +37,7 @@
 			resizerOptionsContainer = iframeDoc.createElement('div');
 			resizerOptionsContainer.style.position = 'absolute';
 			resizerOptionsContainer.style.height = '30px';
-			resizerOptionsContainer.style.width = '100px';
+			resizerOptionsContainer.style.width = '150px';
 			resizerOptionsContainer.style.bottom = '-30px';
 			resizerOptionsContainer.style.left = '0';
 			resizerContainer.appendChild(resizerOptionsContainer);
@@ -139,6 +139,7 @@
 			if (event && event.target.tagName === 'IMG') {
 				return;
 			}
+			resizerContainer.style.display = 'none';
 		}
 	}]);
 }(window.angular));
