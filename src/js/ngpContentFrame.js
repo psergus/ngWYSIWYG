@@ -46,31 +46,31 @@
 						$timeout.cancel(debounce);
 					}
 					debounce = $timeout(function blurkeyup() {
-							ctrl.$setViewValue($body.html());
-							//check the caret position
-							//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
-							var el = getSelectionBoundaryElement($element[0].contentWindow, true);
-							if(el) {
-								var computedStyle = $element[0].contentWindow.getComputedStyle(el);
-								var elementStyle = {
-									'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) >= 700),
-									'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
-									'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
-									'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
-									'font': computedStyle.getPropertyValue("font-family"),
-									'size': parseInt(computedStyle.getPropertyValue("font-size")),
-									'color': computedStyle.getPropertyValue("color"),
-									'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
-									'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
-									'background': computedStyle.getPropertyValue("background-color"),
-									'alignment': computedStyle.getPropertyValue("text-align")
-								};
-								//dispatch upward the through the scope chain
-								scope.$emit('cursor-position', elementStyle);
-								//console.log( JSON.stringify(elementStyle) );
-							}
-						},
-						100/*ms*/, true /*invoke apply*/);
+						ctrl.$setViewValue($body.html());
+						//check the caret position
+						//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
+						var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+						if(el) {
+							var computedStyle = $element[0].contentWindow.getComputedStyle(el);
+							var elementStyle = {
+								'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) >= 700),
+								'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
+								'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
+								'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
+								'font': computedStyle.getPropertyValue("font-family"),
+								'size': parseInt(computedStyle.getPropertyValue("font-size")),
+								'color': computedStyle.getPropertyValue("color"),
+								'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
+								'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
+								'background': computedStyle.getPropertyValue("background-color"),
+								'alignment': computedStyle.getPropertyValue("text-align")
+							};
+							//dispatch upward the through the scope chain
+							scope.$emit('cursor-position', elementStyle);
+							//console.log( JSON.stringify(elementStyle) );
+						}
+					},
+					100/*ms*/, true /*invoke apply*/);
 				});
 
 
