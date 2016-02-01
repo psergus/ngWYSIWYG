@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 	'use strict';
 	angular.module('ngWYSIWYG').service('ngpUtils', [function() {
 		var service = this;
@@ -41,4 +41,4 @@
 			return container;
 		};
 	}]);
-}());
+}(window.angular));

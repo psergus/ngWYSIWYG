@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 	'use strict';
 
 	angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(NGP_EVENTS) {
@@ -43,4 +43,4 @@
 			resizerContainer.parentNode.removeChild(resizerContainer);
 		}
 	}]);
-}());
+}(window.angular));

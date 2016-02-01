@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 	'use strict';
 	angular.module('ngWYSIWYG').directive('ngpResizable', ['$document', function($document) {
 		return function($scope, $element) {
@@ -55,4 +55,4 @@
 			});
 		};
 	}]);
-}());
+}(window.angular));

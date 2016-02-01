@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 	'use strict';
 
 	angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ngpUtils', 'NGP_EVENTS', '$compile',
@@ -186,4 +186,4 @@
 			}
 		}
 	]);
-}());
+}(window.angular));
