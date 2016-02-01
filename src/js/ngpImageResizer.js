@@ -56,6 +56,7 @@
 			// resizer listener
 			iframeDoc.addEventListener('mousedown', startResizing);
 			iframeDoc.addEventListener('mouseup', startResizing);
+			iframeWindow.parent.document.addEventListener('mouseup', startResizing);
 
 			iframeBody.addEventListener('mscontrolselect', disableIESelect);
 
