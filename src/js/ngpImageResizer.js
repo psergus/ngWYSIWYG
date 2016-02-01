@@ -3,7 +3,7 @@
 
 	angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(NGP_EVENTS) {
 		var service = this;
-		var iframeDoc, iframeWindow, iframeBody, resizerContainer,
+		var iframeDoc, iframeWindow, iframeBody, resizerContainer, lastVerticalCursorPosition,
 			iframeScope, keepRatioButton, resizerOptionsContainer, resizing, elementBeingResized;
 
 		service.setup = function(scope, document) {
@@ -105,6 +105,12 @@
 							(elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset);
 			elementBeingResized.style.height = newHeight + 'px';
 			elementBeingResized.style.width = '';
+
+			if (lastVerticalCursorPosition && event.clientY > lastVerticalCursorPosition
+				&& iframeWindow.innerHeight - event.clientY <= 45) {
+				iframeWindow.scrollTo(0, iframeWindow.innerHeight);
+			}
+			lastVerticalCursorPosition = event.clientY;
 			updateResizer();
 		}
 
@@ -140,6 +146,7 @@
 				return;
 			}
 			resizerContainer.style.display = 'none';
+			lastVerticalCursorPosition = null;
 		}
 	}]);
 }(window.angular));
