@@ -455,7 +455,9 @@
 					symbols:{ type: 'div', title: 'Insert Special Symbol', class: 'tinyeditor-control', faIcon: 'cny', backgroundPos: '34px -838px', specialCommand: 'showSpecChars = !showSpecChars', inner: '<symbols-grid show=\"showSpecChars\" on-pick=\"insertSpecChar(symbol)\"><symbols-grid>' },
 					link:{ type: 'div', title: 'Insert Hyperlink', class: 'tinyeditor-control', faIcon: 'link', backgroundPos: '34px -660px', specialCommand: 'insertLink()' },
 					unlink:{ type: 'div', title: 'Remove Hyperlink', class: 'tinyeditor-control', faIcon: 'chain-broken', backgroundPos: '34px -690px', command: 'unlink' },
-					print:{ type: 'div', title: 'Print', class: 'tinyeditor-control', faIcon: 'print', backgroundPos: '34px -750px', command: 'print' },
+					ppt:{ type: 'div', title: 'Insert PPT/PDF', class: 'tinyeditor-control', faIcon: 'file-pdf-o', backgroundPos: '34px -720px', specialCommand: 'insertPP()' },
+					yt:{ type: 'div', title: 'Insert yt video', class: 'tinyeditor-control', faIcon: 'youtube', backgroundPos: '34px -750px', specialCommand: 'insertYT()' },
+					print:{ type: 'div', title: 'Print', class: 'tinyeditor-control', faIcon: 'print', backgroundPos: '34px -810px', command: 'print' },
 					font:{ type: 'select', title: 'Font', class: 'tinyeditor-font', model: 'font', options: 'a as a for a in fonts', change: 'fontChange()' },
 					size:{ type: 'select', title: 'Size', class: 'tinyeditor-size', model: 'fontsize', options: 'a.key as a.name for a in fontsizes', change: 'sizeChange()' },
 					format:{ type: 'select', title: 'Style', class: 'tinyeditor-size', model: 'textstyle', options: 's.key as s.name for s in styles', change: 'styleChange()' }
@@ -515,7 +517,7 @@
 					{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
 					{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
 					{ name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
-					{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
+					{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink','ppt','yt', '-'] },
 					{ name: 'tools', items: ['print', '-'] },
 					{ name: 'styling', items: ['font', 'size', 'format'] }
 				];
@@ -682,6 +684,45 @@
 						insertElement(data);
 					});
 				};
+
+                scope.insertPP = function(){
+                  var val;
+                  if(scope.api && scope.api.insertPP && angular.isFunction(scope.api.insertPP)) {
+                      val = scope.api.insertPP.apply( scope.api.scope || null );
+                  }
+                  else {
+                      val = prompt('Please enter the URL of PDF or PPT file', 'http://');
+                      val = '<iframe src="http://docs.google.com/gview?url='+val+'&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>'
+                  }
+                  $q.when(val).then(function(data) {
+                      insertElement(data);
+                  });
+                }
+
+                function getId(url) {
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    if (match && match[2].length == 11) {
+                            return match[2];
+                        } else {
+                                return 'error';
+                            }
+                }
+
+                scope.insertYT = function(){
+                  var val;
+                  if(scope.api && scope.api.insertYT && angular.isFunction(scope.api.insertYT)) {
+                      val = scope.api.insertYT.apply( scope.api.scope || null );
+                  }
+                  else {
+                      val = prompt('Please enter the youtube video URL', 'http://');
+                      val = getId(val);
+                      val = '<iframe width="560" height="315" src="//www.youtube.com/embed/' + val + '" frameborder="0" allowfullscreen></iframe>'
+                  }
+                  $q.when(val).then(function(data) {
+                      insertElement(data);
+                  });
+                }
 				$element.ready(function() {
 					function makeUnselectable(node) {
 						if (node.nodeType == 1) {
