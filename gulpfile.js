@@ -13,6 +13,7 @@ var bump = require('gulp-bump');
 var rename = require('gulp-rename');
 var protractor = require("gulp-protractor").protractor;
 var _ = require('underscore');
+var umd = require('gulp-umd');
 
 var development = false;
 var webserverInstance;
@@ -26,7 +27,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('webserver', function() {
-	webserverInstance = gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
+	webserverInstance = gulp.src('./dev').pipe(webserver({ host: '127.0.0.1', port: 8000 }));
 });
 
 gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images', 'watch', 'webserver']);
@@ -51,7 +52,7 @@ gulp.task('sass', function() {
 
 gulp.task('minify', ['sass'], function() {
 	return gulp.src(getDestination() + '/editor.css')
-		.pipe(gulpif(development == false, rename(renameMin)))
+		.pipe(gulpif(development === false, rename(renameMin)))
 		.pipe(minifyCss({compatibility: 'ie8'}))
 		.pipe(gulp.dest(getDestination()));
 });
@@ -71,14 +72,42 @@ gulp.task('concat-js', function() {
 			'./src/js/ngpContentFrame.js',
 			'./src/js/ngpResizable.js',
 			'./src/js/ngpUtils.js'
-		]).pipe(concat('wysiwyg.js'))
+		])
+		.pipe(concat('wysiwyg.js'))
+		.pipe(umd({
+	        dependencies: function (file) {
+	            return [{
+	                name: 'angular',
+	                amd: 'angular',
+	                cjs: 'angular',
+	                global: 'angular',
+	                param: 'angular'
+	            }];
+	        },
+	        exports: function (file) {
+	            return "'ngWYSIWYG'";
+	        },
+	        //template: umdTemplates.returnExportsNoNamespace.path,
+	        templateSource: '(function(root, factory) {\r\n' +
+	                            'if (typeof exports === "object") {\r\n' +
+	                                'module.exports = factory(<%= cjs %>);\r\n' +
+	                            '} else if (typeof define === "function" && define.amd) {\r\n' +
+	                                'define(<%= amd %>, factory);\r\n' +
+	                            '} else{\r\n' +
+	                                'factory(<%= global %>);\r\n' +
+	                            '}\r\n' +
+	                        '}(this, function(<%= param %>) {\r\n' +
+	                            '<%= contents %>\r\n' +
+	                            'return <%= exports %>;\r\n' +
+	                        '}));'
+	    }))
 		.pipe(gulp.dest('./dev'));
 });
 
 gulp.task('uglify', ['concat-js'], function() {
 	return gulp.src('./dev/wysiwyg.js')
-		.pipe(gulpif(development == false, uglify({ mangle: true })))
-		.pipe(gulpif(development == false, rename(renameMin)))
+		.pipe(gulpif(development === false, uglify({ mangle: true })))
+		.pipe(gulpif(development === false, rename(renameMin)))
 		.pipe(gulp.dest(getDestination()));
 });
 
@@ -93,7 +122,7 @@ gulp.task('run-tests', ['webserver'], function() {
 			configFile: './src/tests/conf.js',
 			args: ['--baseUrl', 'http://127.0.0.1:8000']
 		}))
-		.on('error', function(e) { throw e })
+		.on('error', function(e) { throw e; });
 });
 
 gulp.task('tests', ['run-tests'], function() {
