@@ -11,18 +11,25 @@ var uglify = require('gulp-uglify');
 var webserver = require('gulp-webserver');
 var bump = require('gulp-bump');
 var rename = require('gulp-rename');
+var protractor = require("gulp-protractor").protractor;
 var _ = require('underscore');
 
 var development = false;
+var webserverInstance;
 
 gulp.task('set-development-mode', function() {
 	development = true;
 });
 
-gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images'], function () {
+gulp.task('watch', function() {
 	gulp.watch(['./src/**/*'], ['minify', 'uglify', 'copy-images']);
-	gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
 });
+
+gulp.task('webserver', function() {
+	webserverInstance = gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
+});
+
+gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images', 'watch', 'webserver']);
 
 function getDestination() {
 	if (development) {
@@ -78,6 +85,19 @@ gulp.task('uglify', ['concat-js'], function() {
 gulp.task('copy-images', function() {
 	return gulp.src('./src/images/**/*')
 		.pipe(gulp.dest(getDestination() + '/images/'));
+});
+
+gulp.task('run-tests', ['webserver'], function() {
+	return gulp.src(['./src/tests/*.js', '!./src/tests/conf.js'])
+		.pipe(protractor({
+			configFile: './src/tests/conf.js',
+			args: ['--baseUrl', 'http://127.0.0.1:8000']
+		}))
+		.on('error', function(e) { throw e })
+});
+
+gulp.task('tests', ['run-tests'], function() {
+	webserverInstance.emit('kill');
 });
 
 gulp.task('build', ['clean-css', 'uglify', 'copy-images']);
