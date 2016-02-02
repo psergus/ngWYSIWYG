@@ -28,8 +28,8 @@ $ bower install ngWYSIWYG --save
 
 Include the ngWYSIWYG files in your index.html:
 ````HTML
-<link rel="stylesheet" href="bower_components/ngWYSIWYG/css/editor.css" />
-<script src="bower_components/ngWYSIWYG/js/wysiwyg.js"></script>
+<link rel="stylesheet" href="bower_components/ngWYSIWYG/dist/editor.min.css" />
+<script src="bower_components/ngWYSIWYG/dist/wysiwyg.min.js"></script>
 ```
 
 Add it as module to your app.js:
@@ -148,7 +148,8 @@ Make sure you feed the api object to the directive like this:
 
 ### Simple download (aka git clone/fork)
 
-1. Include wysiwyg.js in your project using script tags.
+1. Include dist/wysiwyg.min.js in your project using script tag.
+1. Include dist/editor.min.js in your project using link tag.
 2. Add dependency to `ngWYSIWYG` to your app module. Example: ```angular.module('myApp', ['ngWYSIWYG'])```.
 3. Add element ```<wysiwyg-edit content="your_variable"></wysiwyg-edit>```.
 
