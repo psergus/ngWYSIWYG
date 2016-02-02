@@ -36,26 +36,33 @@
 				};
 
 				scope.sync = function() {
-					scope.$evalAsync(function(scope) {
-						ctrl.$setViewValue($body.html());
+					scope.$evalAsync(function() {
+						updateModel();
 					});
 				};
 
+				function updateModel(emit) {
+					var contentDocument = $body[0].ownerDocument;
+					var imageResizer = contentDocument.querySelector('.ngp-image-resizer');
+					var html = $body[0].innerHTML;
+					if (imageResizer) {
+						html = html.replace(imageResizer.outerHTML, '');
+					}
+					ctrl.$setViewValue(html);
+					if (emit) {
+						scope.$emit(NGP_EVENTS.CONTENT_EDIT);
+					}
+				}
+
 				var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
 				//view --> model
-				$body.bind('click keyup change paste', function() { //we removed 'blur' event
+				$body.bind('keyup paste', function() {
 					//lets debounce it
 					if(debounce) {
 						$timeout.cancel(debounce);
 					}
 					debounce = $timeout(function blurkeyup() {
-						var contentDocument = $body[0].ownerDocument;
-						var imageResizer = contentDocument.querySelector('.ngp-image-resizer');
-						var html = $body[0].innerHTML;
-						if (imageResizer) {
-							html = html.replace(imageResizer.outerHTML, '');
-						}
-						ctrl.$setViewValue(html);
+						updateModel();
 						//check the caret position
 						//http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
 						var el = ngpUtils.getSelectionBoundaryElement($element[0].contentWindow, true);
@@ -118,6 +125,7 @@
 					//scope.restoreSelection();
 					$document.body.focus();
 					scope.sync();
+					scope.$emit(NGP_EVENTS.EXEC_COMMAND);
 				});
 
 				scope.$on('insertElement', function(event, html) {
@@ -137,23 +145,15 @@
 							while ((node = el.firstChild)) {
 								lastNode = frag.appendChild(node);
 							}
-							var firstNode = frag.firstChild;
 							range.insertNode(frag);
-
-							// Preserve the selection
-							if (lastNode) {
-								range = range.cloneRange();
-								range.setStartAfter(lastNode);
-								range.collapse(true);
-								sel.removeAllRanges();
-								sel.addRange(range);
-							}
+							scope.$emit(NGP_EVENTS.INSERT_IMAGE, lastNode);
 						}
 					} else if ($document.selection && $document.selection.type != "Control") {
 						// IE < 9
 						$document.selection.createRange().pasteHTML(html);
 					}
 					scope.sync();
+					$document.defaultView.focus();
 				});
 
 				scope.$on('$destroy', function() {

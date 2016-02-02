@@ -20,6 +20,9 @@
 
 	angular.module('ngWYSIWYG').constant('NGP_EVENTS', {
 		ELEMENT_CLICKED: 'ngp-element-clicked',
-		CLICK_AWAY: 'ngp-click-away'
+		CLICK_AWAY: 'ngp-click-away',
+		EXEC_COMMAND: 'ngp-exec-command',
+		CONTENT_EDIT: 'ngp-content-edit',
+		INSERT_IMAGE: 'ngp-insert-image'
 	});
 })(window.angular);

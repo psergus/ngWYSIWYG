@@ -62,7 +62,10 @@
 
 			// listening to events
 			iframeScope.$on(NGP_EVENTS.ELEMENT_CLICKED, createResizer);
+			iframeScope.$on(NGP_EVENTS.INSERT_IMAGE, createResizer);
 			iframeScope.$on(NGP_EVENTS.CLICK_AWAY, removeResizer);
+			iframeScope.$on(NGP_EVENTS.CONTENT_EDIT, removeResizer);
+			iframeScope.$on(NGP_EVENTS.EXEC_COMMAND, updateResizer);
 		};
 
 		function disableIESelect(event) {
@@ -120,7 +123,7 @@
 				iframeDoc.removeEventListener('mousemove', updateImageSize);
 				return;
 			}
-			if (element.tagName !== 'IMG') {
+			if (!element || element.tagName !== 'IMG') {
 				return removeResizer();
 			}
 			if (!resizerContainer.parentNode) {
@@ -131,19 +134,27 @@
 		}
 
 		function updateResizer() {
+			if (!elementBeingResized) {
+				return;
+			}
 			var elementStyle = iframeWindow.getComputedStyle(elementBeingResized);
 			resizerContainer.style.height = elementStyle.getPropertyValue('height');
 			resizerContainer.style.width = elementStyle.getPropertyValue('width');
 			resizerContainer.style.top = (elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset) + 'px';
 			resizerContainer.style.left = (elementBeingResized.getBoundingClientRect().left + iframeWindow.pageXOffset) + 'px';
 			resizerContainer.style.display = 'block';
+			iframeWindow.focus();
 		}
 
-		function removeResizer(event) {
+		function removeResizer(event, target) {
 			if (!resizerContainer.parentNode) {
 				return;
 			}
-			if (event && event.target.tagName === 'IMG') {
+			if (event && event.target && event.target.tagName === 'IMG') {
+				return;
+			}
+			if ((target && target.getAttribute('ng-click') == 'insertImage()') ||
+				(target && target.parentNode && target.parentNode.getAttribute('ng-click') == 'insertImage()')) {
 				return;
 			}
 			resizerContainer.style.display = 'none';

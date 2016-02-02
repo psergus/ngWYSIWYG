@@ -20,8 +20,8 @@
 				scope.editMode = false;
 				scope.cursorStyle = {}; //current cursor/caret position style
 
-				document.addEventListener('click', function() {
-					$rootScope.$broadcast(NGP_EVENTS.CLICK_AWAY);
+				document.addEventListener('click', function(event) {
+					$rootScope.$broadcast(NGP_EVENTS.CLICK_AWAY, event.target);
 				});
 
 				var iframe = null;
@@ -285,11 +285,15 @@
 					}
 					else {
 						val = prompt('Please enter the picture URL', 'http://');
-						val = '<img src="' + val + '">'; //we convert into HTML element.
+						if (val) {
+							val = '<img src="' + val + '">'; //we convert into HTML element.
+						}
 					}
 					//resolve the promise if any
 					$q.when(val).then(function(data) {
-						insertElement(data);
+						if (data) {
+							insertElement(data);
+						}
 					});
 				};
 				$element.ready(function() {
