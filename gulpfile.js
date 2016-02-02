@@ -20,7 +20,7 @@ gulp.task('set-development-mode', function() {
 });
 
 gulp.task('develop', ['set-development-mode', 'minify', 'uglify', 'copy-images'], function () {
-	gulp.watch(['./src/js/**/*.js', './src/css/**/*.sass', './src/images/**/*'], ['minify', 'uglify', 'copy-images']);
+	gulp.watch(['./src/**/*'], ['minify', 'uglify', 'copy-images']);
 	gulp.src('./dev').pipe(webserver({host: '0.0.0.0'}));
 });
 
@@ -55,8 +55,16 @@ gulp.task('clean-css', ['minify'], function () {
 });
 
 gulp.task('concat-js', function() {
-	return gulp.src(['./src/js/wysiwyg.js', './src/js/**/!(wysiwyg)*.js'])
-		.pipe(concat('wysiwyg.js'))
+	return gulp.src([
+			'./src/js/wysiwyg.js',
+			'./src/js/ngpColorsGrid.js',
+			'./src/js/ngpSymbolsGrid.js',
+			'./src/js/ngpImageResizer.js',
+			'./src/js/wysiwygEdit.js',
+			'./src/js/ngpContentFrame.js',
+			'./src/js/ngpResizable.js',
+			'./src/js/ngpUtils.js'
+		]).pipe(concat('wysiwyg.js'))
 		.pipe(gulp.dest('./dev'));
 });
 
