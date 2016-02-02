@@ -685,44 +685,44 @@
 					});
 				};
 
-                scope.insertPP = function(){
-                  var val;
-                  if(scope.api && scope.api.insertPP && angular.isFunction(scope.api.insertPP)) {
-                      val = scope.api.insertPP.apply( scope.api.scope || null );
-                  }
-                  else {
-                      val = prompt('Please enter the URL of PDF or PPT file', 'http://');
-                      val = '<iframe src="http://docs.google.com/gview?url='+val+'&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>'
-                  }
-                  $q.when(val).then(function(data) {
-                      insertElement(data);
-                  });
-                }
+                     		 scope.insertPP = function(){
+                       		 var val;
+                       		 if(scope.api && scope.api.insertPP && angular.isFunction(scope.api.insertPP)) {
+                           		 val = scope.api.insertPP.apply( scope.api.scope || null );
+                       		 }
+                       		 else {
+                           		 val = prompt('Please enter the URL of PDF or PPT file', 'http://');
+                           		 val = '<iframe src="http://docs.google.com/gview?url='+val+'&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>'
+                       		 }
+                       		 $q.when(val).then(function(data) {
+                           		 insertElement(data);
+                       		 });
+                     		 }
+	
+        		              function getId(url) {
+                         		 var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                         		 var match = url.match(regExp);
+                         		 if (match && match[2].length == 11) {
+                                 		 return match[2];
+                             		 } else {
+                                     		 return 'error';
+                                		  }
+                     		 }
 
-                function getId(url) {
-                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                    var match = url.match(regExp);
-                    if (match && match[2].length == 11) {
-                            return match[2];
-                        } else {
-                                return 'error';
-                            }
-                }
-
-                scope.insertYT = function(){
-                  var val;
-                  if(scope.api && scope.api.insertYT && angular.isFunction(scope.api.insertYT)) {
-                      val = scope.api.insertYT.apply( scope.api.scope || null );
-                  }
-                  else {
-                      val = prompt('Please enter the youtube video URL', 'http://');
-                      val = getId(val);
-                      val = '<iframe width="560" height="315" src="//www.youtube.com/embed/' + val + '" frameborder="0" allowfullscreen></iframe>'
-                  }
-                  $q.when(val).then(function(data) {
-                      insertElement(data);
-                  });
-                }
+                     		 scope.insertYT = function(){
+                       		 var val;
+                       		 if(scope.api && scope.api.insertYT && angular.isFunction(scope.api.insertYT)) {
+                           		 val = scope.api.insertYT.apply( scope.api.scope || null );
+                       		 }
+                       		 else {
+                           	 val = prompt('Please enter the youtube video URL', 'http://');
+                           	 val = getId(val);
+                           		 val = '<iframe width="560" height="315" src="//www.youtube.com/embed/' + val + '" frameborder="0" allowfullscreen></iframe>'
+                       		 }
+                       		 $q.when(val).then(function(data) {
+                	            insertElement(data);
+        	                });
+	                      }
 				$element.ready(function() {
 					function makeUnselectable(node) {
 						if (node.nodeType == 1) {
