@@ -57,13 +57,12 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 
 		iframeBody.addEventListener('mscontrolselect', disableIESelect);
 
-			// listening to events
-			iframeScope.$on(NGP_EVENTS.ELEMENT_CLICKED, createResizer);
-			iframeScope.$on(NGP_EVENTS.INSERT_IMAGE, createResizer);
-			iframeScope.$on(NGP_EVENTS.CLICK_AWAY, removeResizer);
-			iframeScope.$on(NGP_EVENTS.CONTENT_EDIT, removeResizer);
-			iframeScope.$on(NGP_EVENTS.EXEC_COMMAND, updateResizer);
-		};
+		// listening to events
+		iframeScope.$on(NGP_EVENTS.ELEMENT_CLICKED, createResizer);
+		iframeScope.$on(NGP_EVENTS.INSERT_IMAGE, createResizer);
+		iframeScope.$on(NGP_EVENTS.CONTENT_EDIT, removeResizer);
+		iframeScope.$on(NGP_EVENTS.EXEC_COMMAND, updateResizer);
+	};
 
 	function disableIESelect(event) {
 		event.preventDefault();
@@ -143,15 +142,9 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 		iframeWindow.focus();
 	}
 
-	function removeResizer(event, target) {
+	function removeResizer() {
 		if (!resizerContainer.parentNode) {
-			return;
-		}
-		if (event && event.target && event.target.tagName === 'IMG') {
-			return;
-		}
-		if ((target && target.getAttribute('ng-click') == 'insertImage()') ||
-			(target && target.parentNode && target.parentNode.getAttribute('ng-click') == 'insertImage()')) {
+			// resizer is not visible, so we must do nothing
 			return;
 		}
 		resizerContainer.style.display = 'none';
