@@ -1,6 +1,6 @@
 {
   "name": "ng-wysiwyg",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "main": "dist/wysiwyg.min.js",
   "description": "true angular WYSIWYG",
   "devDependencies": {
