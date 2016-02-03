@@ -1,7 +1,8 @@
 angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(NGP_EVENTS) {
 	var service = this;
+	service.elementBeingResized = null;
 	var iframeDoc, iframeWindow, iframeBody, resizerContainer, lastVerticalCursorPosition,
-		iframeScope, keepRatioButton, resizerOptionsContainer, resizing, elementBeingResized;
+		iframeScope, keepRatioButton, resizerOptionsContainer, resizing;
 
 	service.setup = function(scope, document) {
 		iframeWindow = document.defaultView;
@@ -10,7 +11,7 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 		iframeScope = scope;
 
 		// creating resizer container
-		resizerContainer = iframeDoc.createElement('div');
+		resizerContainer = iframeDoc.createElement('svg');
 		resizerContainer.className = 'ngp-image-resizer';
 		resizerContainer.style.position = 'absolute';
 		resizerContainer.style.border = '1px dashed black';
@@ -71,16 +72,16 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 	function resetImageSize(event) {
 		event.preventDefault();
 		event.stopPropagation();
-		elementBeingResized.style.height = '';
-		elementBeingResized.style.width = '';
+		service.elementBeingResized.style.height = '';
+		service.elementBeingResized.style.width = '';
 		updateResizer();
 	}
 
 	function size100(event) {
 		event.preventDefault();
 		event.stopPropagation();
-		elementBeingResized.style.width = '100%';
-		elementBeingResized.style.height = '';
+		service.elementBeingResized.style.width = '100%';
+		service.elementBeingResized.style.height = '';
 		updateResizer();
 	}
 
@@ -102,9 +103,9 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 
 		var cursorVerticalPosition = event.pageY;
 		var newHeight = cursorVerticalPosition -
-			(elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset);
-		elementBeingResized.style.height = newHeight + 'px';
-		elementBeingResized.style.width = '';
+			(service.elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset);
+		service.elementBeingResized.style.height = newHeight + 'px';
+		service.elementBeingResized.style.width = '';
 
 		if (lastVerticalCursorPosition && event.clientY > lastVerticalCursorPosition
 			&& iframeWindow.innerHeight - event.clientY <= 45) {
@@ -125,19 +126,19 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 		if (!resizerContainer.parentNode) {
 			iframeBody.appendChild(resizerContainer);
 		}
-		elementBeingResized = element;
+		service.elementBeingResized = element;
 		updateResizer();
 	}
 
 	function updateResizer() {
-		if (!elementBeingResized) {
+		if (!service.elementBeingResized) {
 			return;
 		}
-		var elementStyle = iframeWindow.getComputedStyle(elementBeingResized);
+		var elementStyle = iframeWindow.getComputedStyle(service.elementBeingResized);
 		resizerContainer.style.height = elementStyle.getPropertyValue('height');
 		resizerContainer.style.width = elementStyle.getPropertyValue('width');
-		resizerContainer.style.top = (elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset) + 'px';
-		resizerContainer.style.left = (elementBeingResized.getBoundingClientRect().left + iframeWindow.pageXOffset) + 'px';
+		resizerContainer.style.top = (service.elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset) + 'px';
+		resizerContainer.style.left = (service.elementBeingResized.getBoundingClientRect().left + iframeWindow.pageXOffset) + 'px';
 		resizerContainer.style.display = 'block';
 		iframeWindow.focus();
 	}

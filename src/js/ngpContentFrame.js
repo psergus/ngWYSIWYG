@@ -18,7 +18,21 @@ angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ng
 				if (event.target.tagName === 'HTML') {
 					event.target.querySelector('body').focus();
 				}
-				scope.$emit(NGP_EVENTS.ELEMENT_CLICKED, event.target);
+
+				var target = event.target;
+				if (target.tagName === 'SVG') {
+					target = ngpImageResizer.elementBeingResized;
+				}
+
+				if (target.tagName === 'IMG') {
+					var selectRange = $document.createRange();
+					selectRange.selectNode(ngpImageResizer.elementBeingResized);
+					var selection = $document.defaultView.getSelection();
+					selection.removeAllRanges();
+					selection.addRange(selectRange);
+					// FIXME still not working properly on IE - maybe we should select image's parent
+				}
+				scope.$emit(NGP_EVENTS.ELEMENT_CLICKED, target);
 			});
 
 			// this option enables you to specify a custom CSS to be used within the editor (the editable area)
