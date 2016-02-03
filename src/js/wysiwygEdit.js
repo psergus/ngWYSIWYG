@@ -18,9 +18,9 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', 'NGP_EVENTS', 
 			scope.editMode = false;
 			scope.cursorStyle = {}; //current cursor/caret position style
 
-				document.addEventListener('click', function(event) {
-					$rootScope.$broadcast(NGP_EVENTS.CLICK_AWAY, event.target);
-				});
+			document.addEventListener('click', function(event) {
+				$rootScope.$broadcast(NGP_EVENTS.CLICK_AWAY, event.target);
+			});
 
 			var iframe = null;
 			var iframeDocument = null;

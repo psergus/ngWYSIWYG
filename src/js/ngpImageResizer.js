@@ -102,7 +102,7 @@ angular.module('ngWYSIWYG').service('ngpImageResizer', ['NGP_EVENTS', function(N
 
 		var cursorVerticalPosition = event.pageY;
 		var newHeight = cursorVerticalPosition -
-						(elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset);
+			(elementBeingResized.getBoundingClientRect().top + iframeWindow.pageYOffset);
 		elementBeingResized.style.height = newHeight + 'px';
 		elementBeingResized.style.width = '';
 
