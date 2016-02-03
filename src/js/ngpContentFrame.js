@@ -80,35 +80,13 @@ angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ng
 							};
 							//dispatch upward the through the scope chain
 							scope.$emit('cursor-position', elementStyle);
-							//console.log( JSON.stringify(elementStyle) );
 						}
 					},
 					100/*ms*/, true /*invoke apply*/);
 			});
 
-
-			scope.range = null;
-			scope.getSelection = function() {
-				if($document.getSelection) {
-					var sel = $document.getSelection();
-					if(sel.getRangeAt && sel.rangeCount) {
-						scope.range = sel.getRangeAt(0);
-					}
-				}
-			};
-			scope.restoreSelection = function() {
-				if(scope.range && $document.getSelection) {
-					var sel = $document.getSelection();
-					sel.removeAllRanges();
-					sel.addRange(scope.range);
-				}
-			};
-
 			scope.$on('execCommand', function(e, cmd) {
-				console.log('execCommand: ');
-				console.log(cmd);
 				$element[0].contentDocument.body.focus();
-				//scope.getSelection();
 				var sel = $document.selection; //http://stackoverflow.com/questions/11329982/how-refocus-when-insert-image-in-contenteditable-divs-in-ie
 				if (sel) {
 					var textRange = sel.createRange();
@@ -119,7 +97,6 @@ angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ng
 				else {
 					$document.execCommand(cmd.command, 0, cmd.arg);
 				}
-				//scope.restoreSelection();
 				$document.body.focus();
 				scope.sync();
 				scope.$emit(NGP_EVENTS.EXEC_COMMAND);
@@ -153,16 +130,11 @@ angular.module('ngWYSIWYG').directive('ngpContentFrame', ['ngpImageResizer', 'ng
 				$document.defaultView.focus();
 			});
 
-			scope.$on('$destroy', function() {
-				//clean after myself
-
-			});
-
 			//init
 			try {
-				$document.execCommand("styleWithCSS", 0, 0); // <-- want the Old Schoold elements like <b> or <i>, comment this line. kudos to: http://stackoverflow.com/questions/3088993/webkit-stylewithcss-contenteditable-not-working
 				$document.execCommand('enableObjectResizing', false, 'false');
 				$document.execCommand('contentReadOnly', 0, 'false');
+				$document.execCommand("styleWithCSS", 0, 0); // <-- want the Old Schoold elements like <b> or <i>, comment this line. kudos to: http://stackoverflow.com/questions/3088993/webkit-stylewithcss-contenteditable-not-working
 			}
 			catch(e) {
 				try {
