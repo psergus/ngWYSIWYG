@@ -46,8 +46,14 @@ Use it wherever you want:
 
 ## Configuration
 
-You can configure the editor for two options (will extend l8r). First option is if you want to sanitize input from the user and prevent XSS attacks. This option uses angular's 
-$sanitize. The second option will allow to configure toolbar buttons. You will be able to configure which buttons you want to show. Please see example.
+| Options   | Description                                                                                                  |
+|-----------|--------------------------------------------------------------------------------------------------------------|
+| sanitize  | Sanitize input from the user and prevent XSS attacks using angular's $sanitize                               |
+| toolbar   | Configure toolbar buttons. You will be able to configure which buttons you want to show. Please see example. |
+| fonts     | An array of fonts to show in the font selector drop down                                                     |
+| fontsizes | An array of font sizes to show in the font size dropdown                                                     |
+| styles    | An array of styles to show in the style dropdown                                                             |
+
 
 ````JavaScript
 angular.module('myApp', ['ngWYSIWYG']).
@@ -55,19 +61,22 @@ controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $
 	$scope.your_variable = 'some HTML text here';
 	$scope.api = {
 		scope: $scope,
-		$scope.editorConfig = {
-		    sanitize: false,
-		    toolbar: [
-			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
-			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
-			{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
-			{ name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
-			{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
-			{ name: 'tools', items: ['print', '-'] },
-			{ name: 'styling', items: ['font', 'size', 'format'] },
-		    ]
-		};
 	};
+	$scope.editorConfig = {
+        sanitize: false,
+        fonts: ['Verdana','Arial','Times New Roman'],
+        fontsizes: [{key: 3, size: 16, name: 'normal'}, {key: 4, size: 18, name: 'large'}],
+        styles: [{name: 'Header 1', key: '<h1>'}, {name: 'Header 2', key: '<h2>'}, {name: 'Header 3', key: '<h3>'}],
+        toolbar: [
+        { name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
+        { name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
+        { name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
+        { name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
+        { name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
+        { name: 'tools', items: ['print', '-'] },
+        { name: 'styling', items: ['font', 'size', 'format'] },
+        ]
+    };
 }]);
 ````
 
@@ -103,8 +112,13 @@ html, body {
 ## API
 
 There is an idea on the api functions to delegate some responsibilities to the customer's scope.
-The first thing which is implemented is insert image delegation. By default the directive uses a simple prompt function to accept image's url. However,
-there is a way to bring up a custom dialog box on the customer's side and return promise.
+
+
+| Options     | Description                                                                                                  |
+|-------------|--------------------------------------------------------------------------------------------------------------|
+| scope       | The scope used to call the insertLink / insertImage                                |
+| insertImage | The first thing which is implemented is insert image delegation. By default the directive uses a simple prompt function to accept image's url. However, there is a way to bring up a custom dialog box on the customer's side and return promise. |
+| insertLink  | Custom function for inserting a link                                                     |
 
 ````JavaScript
 angular.module('myApp', ['ngWYSIWYG']).
@@ -112,18 +126,6 @@ controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $
 	$scope.your_variable = 'some HTML text here';
 	$scope.api = {
 		scope: $scope,
-		$scope.editorConfig = {
-		    sanitize: false,
-		    toolbar: [
-			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
-			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
-			{ name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
-			{ name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
-			{ name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
-			{ name: 'tools', items: ['print', '-'] },
-			{ name: 'styling', items: ['font', 'size', 'format'] },
-		    ]
-		};
 		insertImage: function() {
 			var deferred = $q.defer();
 			$timeout(function() {
@@ -138,12 +140,24 @@ controller('demoController', ['$scope', '$q', '$timeout', function($scope, $q, $
 			return deferred.promise;
 		}
 	};
+	$scope.editorConfig = {
+        sanitize: false,
+        toolbar: [
+        { name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
+        { name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
+        { name: 'doers', items: ['removeFormatting', 'undo', 'redo', '-'] },
+        { name: 'colors', items: ['fontColor', 'backgroundColor', '-'] },
+        { name: 'links', items: ['image', 'hr', 'symbols', 'link', 'unlink', '-'] },
+        { name: 'tools', items: ['print', '-'] },
+        { name: 'styling', items: ['font', 'size', 'format'] },
+        ]
+    };
 }]);
 ````
 Make sure you feed the api object to the directive like this:
 
 ```HTML
-<wysiwyg-edit content="your_variable" api="api"></wysiwyg-edit>
+<wysiwyg-edit content="your_variable" api="api" config="editorConfig"></wysiwyg-edit>
 ```
 
 ### Simple download (aka git clone/fork)
@@ -165,7 +179,7 @@ Maintenance
 
 ### Issues?
 
-If you find any, please let me know by sumbitting an issue request. I will be working on it actively.
+If you find any, please let me know by submitting an issue request. I will be working on it actively.
 
 ## Contributers
 
