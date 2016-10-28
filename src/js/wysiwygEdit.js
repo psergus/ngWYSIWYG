@@ -195,7 +195,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', 'NGP_EVENTS', 
 			};
 
 
-			scope.fonts = ['Verdana','Arial', 'Arial Black', 'Arial Narrow', 'Courier New', 'Century Gothic', 'Comic Sans MS', 'Georgia', 'Impact', 'Tahoma', 'Times', 'Times New Roman', 'Webdings','Trebuchet MS'];
+			scope.fonts = (scope.config && scope.config.fonts) || ['Verdana','Arial', 'Arial Black', 'Arial Narrow', 'Courier New', 'Century Gothic', 'Comic Sans MS', 'Georgia', 'Impact', 'Tahoma', 'Times', 'Times New Roman', 'Webdings','Trebuchet MS'];
 			/*
 			 scope.$watch('font', function(newValue) {
 			 if(newValue) {
@@ -208,8 +208,19 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', 'NGP_EVENTS', 
 				scope.execCommand( 'fontname', scope.font );
 				//scope.font = '';
 			};
-			scope.fontsizes = [{key: 1, name: 'x-small'}, {key: 2, name: 'small'}, {key: 3, name: 'normal'}, {key: 4, name: 'large'}, {key: 5, name: 'x-large'}, {key: 6, name: 'xx-large'}, {key: 7, name: 'xxx-large'}];
-			scope.mapFontSize = { 10: 1, 13: 2, 16: 3, 18: 4, 24: 5, 32: 6, 48: 7};
+			scope.fontsizes = (scope.config && scope.config.fontsizes) || [
+			    {key: 1, size: 10, name: 'x-small'},
+                {key: 2, size: 13, name: 'small'},
+                {key: 3, size: 16, name: 'normal'},
+                {key: 4, size: 18, name: 'large'},
+                {key: 5, size: 24, name: 'x-large'},
+                {key: 6, size: 32, name: 'xx-large'},
+                {key: 7, size: 48, name: 'xxx-large'}
+            ];
+			scope.mapFontSize = {};
+			for(var i = 0; i < scope.fontsizes.length; i++){
+			    scope.mapFontSize[scope.fontsizes[i].size] = scope.fontsizes[i].key;
+            };
 			scope.sizeChange = function() {
 				scope.execCommand( 'fontsize', scope.fontsize );
 			};
@@ -221,7 +232,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['ngpUtils', 'NGP_EVENTS', 
 			 }
 			 });
 			 */
-			scope.styles = [{name: 'Paragraph', key: '<p>'}, {name: 'Header 1', key: '<h1>'}, {name: 'Header 2', key: '<h2>'}, {name: 'Header 3', key: '<h3>'}, {name: 'Header 4', key: '<h4>'}, {name: 'Header 5', key: '<h5>'}, {name: 'Header 6', key: '<h6>'}];
+			scope.styles = (scope.config && scope.config.styles) || [{name: 'Paragraph', key: '<p>'}, {name: 'Header 1', key: '<h1>'}, {name: 'Header 2', key: '<h2>'}, {name: 'Header 3', key: '<h3>'}, {name: 'Header 4', key: '<h4>'}, {name: 'Header 5', key: '<h5>'}, {name: 'Header 6', key: '<h6>'}];
 			scope.styleChange = function() {
 				scope.execCommand( 'formatblock', scope.textstyle );
 			};
